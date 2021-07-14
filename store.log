@@ -1,0 +1,47 @@
+2021-07-13 14:52:59 INFO  Store:26 - Program started
+2021-07-13 14:52:59 DEBUG Store:35 - Store services initialized
+2021-07-13 14:53:18 INFO  Store:26 - Program started
+2021-07-13 14:53:18 DEBUG Store:35 - Store services initialized
+2021-07-13 14:54:02 INFO  Store:67 - Sign in attempt
+2021-07-13 14:56:04 INFO  Store:26 - Program started
+2021-07-13 14:56:04 DEBUG Store:35 - Store services initialized
+2021-07-13 14:57:38 INFO  Store:26 - Program started
+2021-07-13 14:57:38 DEBUG Store:35 - Store services initialized
+2021-07-13 14:58:00 INFO  Store:67 - Sign in attempt
+2021-07-13 14:58:10 DEBUG Store:84 - Sign in error
+2021-07-13 14:58:10 INFO  Store:87 - Sign in ended
+2021-07-13 14:58:24 INFO  Store:44 - Sign up attempt
+2021-07-13 14:58:31 DEBUG Store:56 - User signed up
+2021-07-13 14:58:31 INFO  Store:63 - Sign up ended
+2021-07-13 14:58:52 INFO  Store:44 - Sign up attempt
+2021-07-13 14:58:57 DEBUG Store:60 - Sign up error
+2021-07-13 14:58:57 INFO  Store:63 - Sign up ended
+2021-07-13 14:59:03 INFO  Store:67 - Sign in attempt
+2021-07-13 14:59:09 DEBUG Store:80 - User signed in
+2021-07-13 14:59:09 INFO  Store:87 - Sign in ended
+2021-07-13 16:41:29 INFO  Store:32 - Program started
+2021-07-13 16:41:29 DEBUG Store:41 - Store services initialized
+2021-07-13 16:41:59 INFO  Store:116 - Showing products
+2021-07-13 16:41:59 DEBUG Store:120 - Exit from showing mode
+2021-07-13 16:42:08 INFO  Store:96 - Adding item to store
+2021-07-13 16:42:33 DEBUG Store:107 - Item Product(id=0, name=t-shrt, cost=30.7, quantity=3) added
+2021-07-13 16:42:33 INFO  Store:112 - Adding procedure ended
+2021-07-13 16:43:12 INFO  Store:96 - Adding item to store
+2021-07-13 16:43:34 DEBUG Store:107 - Item Product(id=1, name=jordan, cost=170.0, quantity=1) added
+2021-07-13 16:43:34 INFO  Store:112 - Adding procedure ended
+2021-07-13 16:43:43 INFO  Store:116 - Showing products
+2021-07-13 16:43:43 DEBUG Store:120 - Exit from showing mode
+2021-07-13 16:43:56 INFO  Store:116 - Showing products
+2021-07-13 16:43:56 DEBUG Store:120 - Exit from showing mode
+2021-07-13 16:44:04 INFO  Store:124 - Deleting item
+2021-07-13 16:44:10 DEBUG Store:129 - Product with id: 0 deleted
+2021-07-13 16:44:10 INFO  Store:134 - Deleting procedure ended
+2021-07-13 16:44:23 INFO  Store:116 - Showing products
+2021-07-13 16:44:23 DEBUG Store:120 - Exit from showing mode
+2021-07-13 16:46:22 INFO  Store:32 - Program started
+2021-07-13 16:46:22 DEBUG Store:41 - Store services initialized
+2021-07-13 16:46:42 INFO  Store:96 - Adding item to store
+2021-07-13 16:46:58 DEBUG Store:107 - Item Product(id=0, name=cap, cost=20.3, quantity=17) added
+2021-07-13 16:46:58 INFO  Store:112 - Adding procedure ended
+2021-07-13 16:47:30 INFO  Store:116 - Showing products
+2021-07-13 16:47:30 DEBUG Store:120 - Exit from showing mode
