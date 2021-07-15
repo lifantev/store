@@ -1,14 +1,16 @@
 package com.nedu.store.order;
 
-import com.nedu.store.product.Product;
+import com.nedu.store.product.dao.ProductDao;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 import java.util.List;
 
 @Data
+@Builder
 public class Basket {
-    @NonNull List<Product> products;
+    long id;
+    List<Long> productIds;
     double totalCost;
     boolean purchaseSuccess;
 }

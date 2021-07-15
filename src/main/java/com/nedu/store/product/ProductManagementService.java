@@ -1,7 +1,8 @@
 package com.nedu.store.product;
 
 public interface ProductManagementService {
-    boolean add(Product product);
-    boolean delete(long id);
+    Product add(Product product);
+    void delete(long id);
+    Product update(Product product);
     void show();
 }

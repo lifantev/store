@@ -1,11 +1,7 @@
 package com.nedu.store;
 
 import com.nedu.store.order.Basket;
-import com.nedu.store.order.OrderService;
-import com.nedu.store.order.OrderServiceImpl;
 import com.nedu.store.product.Product;
-import com.nedu.store.product.ProductManagementService;
-import com.nedu.store.product.ProductManagementServiceImpl;
 import com.nedu.store.user.User;
 import com.nedu.store.user.UserService;
 import com.nedu.store.user.UserServiceImpl;
@@ -22,6 +18,9 @@ public class Main {
             --add item
             --delete item
             --show items
+            --add to card
+            --remove from card
+            --purchase card
             --exit
             """;
 
@@ -31,11 +30,11 @@ public class Main {
         Logger logger = Logger.getLogger("Store");
         logger.info("Program started");
 
-        UserService userService = new UserServiceImpl();
+        UserService userService = new UserServiceImpl(userDao);
         logger.trace("User service created");
-        ProductManagementService productMS = new ProductManagementServiceImpl();
+        //ProductManagementService productMS = new ProductManagementServiceImpl(productDao);
         logger.trace("Product management service created");
-        OrderService orderService = new OrderServiceImpl();
+        //OrderService orderService = new OrderServiceImpl(userDao, productDao, orderDao);
         logger.trace("Order service created");
 
         logger.debug("Store services initialized");
@@ -132,6 +131,12 @@ public class Main {
                     }
 
                     logger.info("Deleting procedure ended");
+                    break;
+
+                case "--add to card":
+                    System.out.println("Enter product id:");
+                    long idInCard = command.nextLong();
+                    //orderService.addToBasket(userService.getCurrentUser().getBasket(), )
                     break;
 
                 case "--menu":

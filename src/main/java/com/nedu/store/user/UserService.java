@@ -1,6 +1,7 @@
 package com.nedu.store.user;
 
 public interface UserService {
-    boolean signUp(User user);
+    void signUp(User user);
     User signIn(User user);
+    User getCurrentUser();
 }

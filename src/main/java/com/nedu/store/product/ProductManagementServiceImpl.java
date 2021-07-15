@@ -1,33 +1,34 @@
 package com.nedu.store.product;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.LinkedList;
-import java.util.List;
+import com.nedu.store.product.dao.ProductDao;
+import org.apache.log4j.Logger;
 
 public class ProductManagementServiceImpl implements ProductManagementService {
-    private final List<Product> productList = new LinkedList<>();
-    private long id = 0;
+    private static final Logger LOGGER = Logger.getLogger("productManagementService");
 
-    @Override
-    public boolean add(Product product) {
-        product.setId(id);
-        id++;
-        return productList.add(product);
+    private final ProductDao productDao;
+
+    public ProductManagementServiceImpl(ProductDao productDao) {
+        this.productDao = productDao;
     }
 
     @Override
-    public boolean delete(long id) {
-        Product product = new Product();
-        product.setId(id);
-        return productList.remove(product);
+    public Product add(Product product) {
+        return productDao.createProduct(product);
+    }
+
+    @Override
+    public void delete(long id) {
+        productDao.deleteProduct(id);
+    }
+
+    @Override
+    public Product update(Product product) {
+        return productDao.updateProduct(product);
     }
 
     @Override
     public void show() {
-        if (!productList.isEmpty()) {
-            productList.forEach(System.out::println);
-        }
+        productDao.getProductList().forEach(System.out::println);
     }
 }
