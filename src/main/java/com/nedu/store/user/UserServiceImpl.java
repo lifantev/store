@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("User signing in");
 
         User stored = userDao.getUserByLogin(user.getLogin());
-        if (stored == null) {
+        if (null == stored) {
             LOGGER.info("User with login="
                     + user.getLogin() + " doesn't exist");
             throw new RuntimeException();

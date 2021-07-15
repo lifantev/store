@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger("userDao");
@@ -44,7 +45,7 @@ public class UserDaoImpl implements UserDao {
     public User getUser(long id) {
         User stored = users.get(id);
 
-        if (stored == null) {
+        if (null == stored) {
             LOGGER.warn("Get user with id=" + id + " was failed");
             throw new RuntimeException("There is no user with id=" + id);
         }
@@ -60,12 +61,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
-        var userStream = users.values().stream().filter(u -> u.getLogin().equals(login));
+        var userStream = users.values().stream().filter(u -> Objects.equals(u.getLogin(), login));
 
         User stored = null;
         try {
             stored = userStream.findFirst().get();
         } catch (Exception e) {
+            LOGGER.error("User with login=" + login + " wasn't found!");
         }
         return stored;
     }

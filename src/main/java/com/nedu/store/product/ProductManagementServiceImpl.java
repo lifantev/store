@@ -20,7 +20,7 @@ public class ProductManagementServiceImpl implements ProductManagementService {
 
         Product stored = productDao.createProduct(product);
 
-        if (stored == null) {
+        if (null == stored) {
             LOGGER.warn("Adding product=" + product + " was failed!");
             throw new RuntimeException("Product=" + product + " wasn't added");
         }

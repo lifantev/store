@@ -39,7 +39,7 @@ public class OrderDaoImpl implements OrderDao {
     public Basket getBasket(long basketId) {
         Basket stored = baskets.get(basketId);
 
-        if (stored == null) {
+        if (null == stored) {
             LOGGER.warn("Get basket with id=" + basketId + " was failed");
             throw new RuntimeException("There is no basket with id=" + basketId);
         }
@@ -57,7 +57,7 @@ public class OrderDaoImpl implements OrderDao {
     public Basket updateBasket(Basket basket) {
         Basket origin = baskets.get(basket.getId());
 
-        if (origin == null) {
+        if (null == origin) {
             LOGGER.warn("Update basket with id=" + basket.getId() + " was failed");
             throw new RuntimeException("There is no basket with id=" + basket.getId());
         }

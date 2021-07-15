@@ -37,7 +37,7 @@ public class ProductDaoImpl implements ProductDao {
     public Product getProduct(long id) {
         Product stored = products.get(id);
 
-        if (stored == null) {
+        if (null == stored) {
             LOGGER.warn("Get product with id=" + id + " was failed");
             throw new RuntimeException("There is no product with id=" + id);
         }
@@ -72,7 +72,7 @@ public class ProductDaoImpl implements ProductDao {
     public Product updateProduct(Product product) {
         Product origin = products.get(product.getId());
 
-        if (origin == null) {
+        if (null == origin) {
             LOGGER.warn("Update product with id=" + product.getId() + " was failed");
             throw new RuntimeException("There is no product with id=" + product.getId());
         }
