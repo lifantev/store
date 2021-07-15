@@ -34,7 +34,9 @@ public class UserDaoImpl implements UserDao {
 
         users.put(id, toStore);
 
-        user.setId(id);
+        user.setId(toStore.getId());
+        user.setBasketId(toStore.getBasketId());
+        LOGGER.trace("User created=" + user);
         return user;
     }
 
@@ -43,9 +45,11 @@ public class UserDaoImpl implements UserDao {
         User stored = users.get(id);
 
         if (stored == null) {
+            LOGGER.warn("Get user with id=" + id + " was failed");
             throw new RuntimeException("There is no user with id=" + id);
         }
 
+        LOGGER.trace("User accessed=" + stored);
         return User.builder()
                 .id(stored.getId())
                 .login(stored.getLogin())
@@ -56,19 +60,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
-        var userStream = users.entrySet().stream().map(e -> e.getValue()).filter(u -> u.getLogin().equals(login));
-        User stored = userStream.findFirst().get();
+        var userStream = users.values().stream().filter(u -> u.getLogin().equals(login));
 
-        return User.builder()
-                .id(stored.getId())
-                .login(stored.getLogin())
-                .password(stored.getPassword())
-                .basketId(stored.getBasketId())
-                .build();
-    }
-
-    @Override
-    public void deleteUser(long id) {
-        users.remove(id);
+        User stored = null;
+        try {
+            stored = userStream.findFirst().get();
+        } catch (Exception e) {
+        }
+        return stored;
     }
 }

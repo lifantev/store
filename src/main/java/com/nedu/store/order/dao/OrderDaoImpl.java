@@ -31,6 +31,7 @@ public class OrderDaoImpl implements OrderDao {
         baskets.put(id, toStore);
 
         basket.setId(id);
+        LOGGER.trace("Basket created=" + basket);
         return basket;
     }
 
@@ -39,9 +40,11 @@ public class OrderDaoImpl implements OrderDao {
         Basket stored = baskets.get(basketId);
 
         if (stored == null) {
+            LOGGER.warn("Get basket with id=" + basketId + " was failed");
             throw new RuntimeException("There is no basket with id=" + basketId);
         }
 
+        LOGGER.trace("Basket accessed=" + stored);
         return Basket.builder()
                 .id(stored.getId())
                 .productIds(stored.getProductIds())
@@ -55,6 +58,7 @@ public class OrderDaoImpl implements OrderDao {
         Basket origin = baskets.get(basket.getId());
 
         if (origin == null) {
+            LOGGER.warn("Update basket with id=" + basket.getId() + " was failed");
             throw new RuntimeException("There is no basket with id=" + basket.getId());
         }
 
@@ -63,6 +67,7 @@ public class OrderDaoImpl implements OrderDao {
         origin.setPurchaseSuccess(true);
 
         basket.setId(origin.getId());
+        LOGGER.trace("Basket updated=" + basket);
         return basket;
     }
 }

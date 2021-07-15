@@ -10,44 +10,49 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
 
-    private User currentUser;
-
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
+
+        LOGGER.debug("User service created");
     }
 
     @Override
-    public void signUp(User user) {
+    public User signUp(User user) {
+        LOGGER.debug("User signing up");
+
         if (user.getPassword().length() < 3) {
-            throw new RuntimeException("Short password");
+            LOGGER.info("Short password (must be 4 symbols)");
+            throw new RuntimeException();
         }
 
         if (userDao.getUserByLogin(user.getLogin()) != null) {
-            throw new RuntimeException("User with the same login="
+            LOGGER.info("User with the same login="
                     + user.getLogin() + " already exists");
+            throw new RuntimeException();
         }
 
-        currentUser = userDao.createUser(user);
+        user = userDao.createUser(user);
+        LOGGER.info("User=" + user + " signed up");
+        return user;
     }
 
     @Override
     public User signIn(User user) {
+        LOGGER.debug("User signing in");
+
         User stored = userDao.getUserByLogin(user.getLogin());
-        if (stored != null) {
-            throw new RuntimeException("User with login="
+        if (stored == null) {
+            LOGGER.info("User with login="
                     + user.getLogin() + " doesn't exist");
+            throw new RuntimeException();
         }
 
         if (!Objects.equals(stored.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Wrong password or login");
+            LOGGER.info("Wrong password or login");
+            throw new RuntimeException();
         }
 
-        currentUser = stored;
+        LOGGER.info("User=" + stored + " signed in");
         return stored;
-    }
-
-    @Override
-    public User getCurrentUser() {
-        return currentUser;
     }
 }

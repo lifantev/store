@@ -1,6 +1,5 @@
 package com.nedu.store.order;
 
-import com.nedu.store.product.dao.ProductDao;
 import lombok.Builder;
 import lombok.Data;
 

@@ -6,5 +6,4 @@ public interface UserDao {
     User createUser(User user);
     User getUser(long id);
     User getUserByLogin(String login);
-    void deleteUser(long id);
 }

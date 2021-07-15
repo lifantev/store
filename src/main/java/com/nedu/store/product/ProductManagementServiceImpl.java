@@ -10,25 +10,65 @@ public class ProductManagementServiceImpl implements ProductManagementService {
 
     public ProductManagementServiceImpl(ProductDao productDao) {
         this.productDao = productDao;
+
+        LOGGER.debug("Product management service created");
     }
 
     @Override
     public Product add(Product product) {
-        return productDao.createProduct(product);
+        LOGGER.debug("Adding product to store");
+
+        Product stored = productDao.createProduct(product);
+
+        if (stored == null) {
+            LOGGER.warn("Adding product=" + product + " was failed!");
+            throw new RuntimeException("Product=" + product + " wasn't added");
+        }
+
+        product = productDao.getProduct(stored.getId());
+
+        LOGGER.info("Product=" + product + " was added to store");
+
+        return product;
     }
 
     @Override
     public void delete(long id) {
         productDao.deleteProduct(id);
+
+        LOGGER.info("Product with id=" + id + " deleted from store");
     }
 
     @Override
     public Product update(Product product) {
-        return productDao.updateProduct(product);
+        try {
+            LOGGER.debug("Updating product");
+
+            Product updated = productDao.updateProduct(product);
+
+            product = productDao.getProduct(updated.getId());
+
+            LOGGER.info("Product(id=" + updated.getId()
+                    + ") was updated to=" + product);
+
+            return product;
+
+        } catch (Exception e) {
+            LOGGER.warn("Updating product with id="
+                    + product.getId() + " was failed!");
+            return null;
+        }
     }
 
     @Override
     public void show() {
-        productDao.getProductList().forEach(System.out::println);
+        try {
+            LOGGER.debug("Showing store's products");
+
+            productDao.getProductList().forEach(System.out::println);
+
+        } catch (Exception e) {
+            LOGGER.warn("Showing products was failed!");
+        }
     }
 }

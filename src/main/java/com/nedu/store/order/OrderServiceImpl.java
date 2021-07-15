@@ -3,7 +3,6 @@ package com.nedu.store.order;
 import com.nedu.store.order.dao.OrderDao;
 import com.nedu.store.product.Product;
 import com.nedu.store.product.dao.ProductDao;
-import com.nedu.store.user.User;
 import com.nedu.store.user.dao.UserDao;
 import org.apache.log4j.Logger;
 
@@ -18,41 +17,55 @@ public class OrderServiceImpl implements OrderService {
         this.userDao = userDao;
         this.orderDao = orderDao;
         this.productDao = productDao;
+
+        LOGGER.debug("Order service created");
     }
 
     @Override
     public void addToBasket(long userId, long productId) {
         try {
+            LOGGER.debug("Adding product to basket");
+
             Basket basket =
                     orderDao.getBasket(userDao.getUser(userId).getBasketId());
             Product product = productDao.getProduct(productId);
 
-            basket.getProductIds().add(productId);
+            basket.getProductIds().add(product.getId());
+
+            LOGGER.info("Product with id=" + productId +
+                    " added to user's(id=" + userId + ") basket");
+
         } catch (Exception exception) {
-            //
-
-
+            LOGGER.warn("Adding product with id=" + productId
+                    + " to user's(id=" + userId + ") basket was failed!");
         }
     }
 
     @Override
     public void deleteFromBasket(long userId, long productId) {
         try {
+            LOGGER.debug("Deleting product from basket");
+
             Basket basket =
                     orderDao.getBasket(userDao.getUser(userId).getBasketId());
             Product product = productDao.getProduct(productId);
 
-            basket.getProductIds().remove(productId);
+            basket.getProductIds().remove(product.getId());
+
+            LOGGER.info("Product with id=" + productId +
+                    " deleted from user's(id=" + userId + ") basket");
+
         } catch (Exception exception) {
-            //
-
-
+            LOGGER.warn("Deleting product with id=" + productId +
+                    " from user's(id=" + userId + ") basket was failed!");
         }
     }
 
     @Override
     public void purchaseBasket(long userId, boolean purchaseSuccess) {
-        if (purchaseSuccess == true) {
+        LOGGER.debug("Purchasing basket");
+
+        if (purchaseSuccess) {
             try {
                 Basket basket =
                         orderDao.getBasket(userDao.getUser(userId).getBasketId());
@@ -61,11 +74,15 @@ public class OrderServiceImpl implements OrderService {
                         .id(basket.getId())
                         .build()
                 );
+
+                LOGGER.info("User's(id=" + userId + ") basket was purchased");
+
             } catch (Exception exception) {
-                //
-
-
+                LOGGER.warn("Purchasing basket of user(id=" + userId + ") was failed!");
             }
+        }
+        else {
+            LOGGER.info("Purchasing basket of user(id=" + userId + ") is not allowed");
         }
     }
 }

@@ -29,6 +29,7 @@ public class ProductDaoImpl implements ProductDao {
         products.put(id, productToStore);
 
         product.setId(id);
+        LOGGER.trace("Product created=" + product);
         return product;
     }
 
@@ -37,12 +38,15 @@ public class ProductDaoImpl implements ProductDao {
         Product stored = products.get(id);
 
         if (stored == null) {
+            LOGGER.warn("Get product with id=" + id + " was failed");
             throw new RuntimeException("There is no product with id=" + id);
         }
 
+        LOGGER.trace("Product accessed=" + stored);
         return Product.builder()
                 .id(stored.getId())
                 .name(stored.getName())
+                .cost(stored.getCost())
                 .build();
     }
 
@@ -50,10 +54,12 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> getProductList() {
         var storedProducts = products.entrySet();
 
-        if (storedProducts == null) {
-            throw new RuntimeException("There is no products at all=");
+        if (storedProducts.isEmpty()) {
+            LOGGER.warn("Getting product list was failed");
+            throw new RuntimeException("There is no products in product list");
         }
 
+        LOGGER.trace("Product list accessed");
         return storedProducts.stream().map(e -> getProduct(e.getKey())).toList();
     }
 
@@ -67,6 +73,7 @@ public class ProductDaoImpl implements ProductDao {
         Product origin = products.get(product.getId());
 
         if (origin == null) {
+            LOGGER.warn("Update product with id=" + product.getId() + " was failed");
             throw new RuntimeException("There is no product with id=" + product.getId());
         }
 
@@ -74,6 +81,7 @@ public class ProductDaoImpl implements ProductDao {
         origin.setCost(product.getCost());
 
         product.setId(origin.getId());
+        LOGGER.trace("Product updated=" + product);
         return product;
     }
 }
