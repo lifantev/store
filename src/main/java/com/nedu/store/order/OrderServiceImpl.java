@@ -5,7 +5,9 @@ import com.nedu.store.product.Product;
 import com.nedu.store.product.dao.ProductDao;
 import com.nedu.store.user.dao.UserDao;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
+@Component("orderService")
 public class OrderServiceImpl implements OrderService {
     private static final Logger LOGGER = Logger.getLogger("orderService");
 

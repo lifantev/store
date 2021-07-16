@@ -3,11 +3,13 @@ package com.nedu.store.order.dao;
 import com.nedu.store.idgenerator.IdGenerator;
 import com.nedu.store.order.Basket;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+@Component("orderDao")
 public class OrderDaoImpl implements OrderDao {
     private static final Logger LOGGER = Logger.getLogger("orderDao");
 

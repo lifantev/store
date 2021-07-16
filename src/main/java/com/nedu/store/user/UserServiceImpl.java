@@ -2,9 +2,11 @@ package com.nedu.store.user;
 
 import com.nedu.store.user.dao.UserDao;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Component("userService")
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = Logger.getLogger("userService");
 

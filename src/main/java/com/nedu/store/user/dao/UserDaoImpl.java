@@ -5,11 +5,13 @@ import com.nedu.store.order.Basket;
 import com.nedu.store.order.dao.OrderDao;
 import com.nedu.store.user.User;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@Component("userDao")
 public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger("userDao");
 

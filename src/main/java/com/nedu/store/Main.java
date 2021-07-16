@@ -1,22 +1,13 @@
 package com.nedu.store;
 
-import com.nedu.store.idgenerator.IdGenerator;
-import com.nedu.store.idgenerator.SimpleIdGeneratorImpl;
 import com.nedu.store.order.OrderService;
-import com.nedu.store.order.OrderServiceImpl;
-import com.nedu.store.order.dao.OrderDao;
-import com.nedu.store.order.dao.OrderDaoImpl;
 import com.nedu.store.product.Product;
 import com.nedu.store.product.ProductManagementService;
-import com.nedu.store.product.ProductManagementServiceImpl;
-import com.nedu.store.product.dao.ProductDao;
-import com.nedu.store.product.dao.ProductDaoImpl;
 import com.nedu.store.user.User;
 import com.nedu.store.user.UserService;
-import com.nedu.store.user.UserServiceImpl;
-import com.nedu.store.user.dao.UserDao;
-import com.nedu.store.user.dao.UserDaoImpl;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Scanner;
 
@@ -42,14 +33,12 @@ public class Main {
     public static void main(String[] args) {
         Scanner command = new Scanner(System.in);
 
-        IdGenerator idGenerator = new SimpleIdGeneratorImpl();
-        OrderDao orderDao = new OrderDaoImpl(idGenerator);
-        UserDao userDao = new UserDaoImpl(idGenerator, orderDao);
-        ProductDao productDao = new ProductDaoImpl(idGenerator);
+        ApplicationContext context = new AnnotationConfigApplicationContext("com.nedu.store");
 
-        UserService userService = new UserServiceImpl(userDao);
-        ProductManagementService productMS = new ProductManagementServiceImpl(productDao);
-        OrderService orderService = new OrderServiceImpl(userDao, orderDao, productDao);
+        UserService userService = context.getBean("userService", UserService.class);
+        ProductManagementService productMS =
+                context.getBean("productManagementService", ProductManagementService.class);
+        OrderService orderService = context.getBean("orderService", OrderService.class);
 
         System.out.println("Welcome to Store\n" + MENU);
 

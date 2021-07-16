@@ -3,9 +3,11 @@ package com.nedu.store.product.dao;
 import com.nedu.store.idgenerator.IdGenerator;
 import com.nedu.store.product.Product;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Component("productDao")
 public class ProductDaoImpl implements ProductDao {
     private static final Logger LOGGER = Logger.getLogger("productDao");
 

@@ -2,7 +2,9 @@ package com.nedu.store.product;
 
 import com.nedu.store.product.dao.ProductDao;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
+@Component("productManagementService")
 public class ProductManagementServiceImpl implements ProductManagementService {
     private static final Logger LOGGER = Logger.getLogger("productManagementService");
 
