@@ -2,16 +2,16 @@ package com.nedu.store.order.dao;
 
 import com.nedu.store.idgenerator.IdGenerator;
 import com.nedu.store.order.Basket;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-@Component("orderDao")
+@Slf4j
+@Service("orderDao")
 public class OrderDaoImpl implements OrderDao {
-    private static final Logger LOGGER = Logger.getLogger("orderDao");
 
     private final Map<Long, Basket> baskets = new HashMap<>();
 
@@ -33,7 +33,7 @@ public class OrderDaoImpl implements OrderDao {
         baskets.put(id, toStore);
 
         basket.setId(id);
-        LOGGER.trace("Basket created=" + basket);
+        log.trace("Basket created=" + basket);
         return basket;
     }
 
@@ -42,11 +42,11 @@ public class OrderDaoImpl implements OrderDao {
         Basket stored = baskets.get(basketId);
 
         if (null == stored) {
-            LOGGER.warn("Get basket with id=" + basketId + " was failed");
+            log.warn("Get basket with id=" + basketId + " was failed");
             throw new RuntimeException("There is no basket with id=" + basketId);
         }
 
-        LOGGER.trace("Basket accessed=" + stored);
+        log.trace("Basket accessed=" + stored);
         return Basket.builder()
                 .id(stored.getId())
                 .productIds(stored.getProductIds())
@@ -60,7 +60,7 @@ public class OrderDaoImpl implements OrderDao {
         Basket origin = baskets.get(basket.getId());
 
         if (null == origin) {
-            LOGGER.warn("Update basket with id=" + basket.getId() + " was failed");
+            log.warn("Update basket with id=" + basket.getId() + " was failed");
             throw new RuntimeException("There is no basket with id=" + basket.getId());
         }
 
@@ -69,7 +69,7 @@ public class OrderDaoImpl implements OrderDao {
         origin.setPurchaseSuccess(true);
 
         basket.setId(origin.getId());
-        LOGGER.trace("Basket updated=" + basket);
+        log.trace("Basket updated=" + basket);
         return basket;
     }
 }

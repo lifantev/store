@@ -2,14 +2,16 @@ package com.nedu.store.product.dao;
 
 import com.nedu.store.idgenerator.IdGenerator;
 import com.nedu.store.product.Product;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Component("productDao")
+@Slf4j
+@Service("productDao")
 public class ProductDaoImpl implements ProductDao {
-    private static final Logger LOGGER = Logger.getLogger("productDao");
 
     private final Map<Long, Product> products = new HashMap<>();
     private final IdGenerator idGenerator;
@@ -31,7 +33,7 @@ public class ProductDaoImpl implements ProductDao {
         products.put(id, productToStore);
 
         product.setId(id);
-        LOGGER.trace("Product created=" + product);
+        log.trace("Product created=" + product);
         return product;
     }
 
@@ -40,11 +42,11 @@ public class ProductDaoImpl implements ProductDao {
         Product stored = products.get(id);
 
         if (null == stored) {
-            LOGGER.warn("Get product with id=" + id + " was failed");
+            log.warn("Get product with id=" + id + " was failed");
             throw new RuntimeException("There is no product with id=" + id);
         }
 
-        LOGGER.trace("Product accessed=" + stored);
+        log.trace("Product accessed=" + stored);
         return Product.builder()
                 .id(stored.getId())
                 .name(stored.getName())
@@ -57,11 +59,11 @@ public class ProductDaoImpl implements ProductDao {
         var storedProducts = products.entrySet();
 
         if (storedProducts.isEmpty()) {
-            LOGGER.warn("Getting product list was failed");
+            log.warn("Getting product list was failed");
             throw new RuntimeException("There is no products in product list");
         }
 
-        LOGGER.trace("Product list accessed");
+        log.trace("Product list accessed");
         return storedProducts.stream().map(e -> getProduct(e.getKey())).toList();
     }
 
@@ -75,7 +77,7 @@ public class ProductDaoImpl implements ProductDao {
         Product origin = products.get(product.getId());
 
         if (null == origin) {
-            LOGGER.warn("Update product with id=" + product.getId() + " was failed");
+            log.warn("Update product with id=" + product.getId() + " was failed");
             throw new RuntimeException("There is no product with id=" + product.getId());
         }
 
@@ -83,7 +85,7 @@ public class ProductDaoImpl implements ProductDao {
         origin.setCost(product.getCost());
 
         product.setId(origin.getId());
-        LOGGER.trace("Product updated=" + product);
+        log.trace("Product updated=" + product);
         return product;
     }
 }

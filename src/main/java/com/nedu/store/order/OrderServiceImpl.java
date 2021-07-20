@@ -4,12 +4,14 @@ import com.nedu.store.order.dao.OrderDao;
 import com.nedu.store.product.Product;
 import com.nedu.store.product.dao.ProductDao;
 import com.nedu.store.user.dao.UserDao;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
-@Component("orderService")
+import javax.annotation.PostConstruct;
+
+@Slf4j
+@Service("orderService")
 public class OrderServiceImpl implements OrderService {
-    private static final Logger LOGGER = Logger.getLogger("orderService");
 
     private final UserDao userDao;
     private final OrderDao orderDao;
@@ -19,14 +21,17 @@ public class OrderServiceImpl implements OrderService {
         this.userDao = userDao;
         this.orderDao = orderDao;
         this.productDao = productDao;
+    }
 
-        LOGGER.debug("Order service created");
+    @PostConstruct
+    public void postConstruct() {
+        log.debug("Order service created");
     }
 
     @Override
     public void addToBasket(long userId, long productId) {
         try {
-            LOGGER.debug("Adding product to basket");
+            log.debug("Adding product to basket");
 
             Basket basket =
                     orderDao.getBasket(userDao.getUser(userId).getBasketId());
@@ -34,11 +39,11 @@ public class OrderServiceImpl implements OrderService {
 
             basket.getProductIds().add(product.getId());
 
-            LOGGER.info("Product with id=" + productId +
+            log.info("Product with id=" + productId +
                     " added to user's(id=" + userId + ") basket");
 
         } catch (Exception exception) {
-            LOGGER.warn("Adding product with id=" + productId
+            log.warn("Adding product with id=" + productId
                     + " to user's(id=" + userId + ") basket was failed!");
         }
     }
@@ -46,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteFromBasket(long userId, long productId) {
         try {
-            LOGGER.debug("Deleting product from basket");
+            log.debug("Deleting product from basket");
 
             Basket basket =
                     orderDao.getBasket(userDao.getUser(userId).getBasketId());
@@ -54,18 +59,18 @@ public class OrderServiceImpl implements OrderService {
 
             basket.getProductIds().remove(product.getId());
 
-            LOGGER.info("Product with id=" + productId +
+            log.info("Product with id=" + productId +
                     " deleted from user's(id=" + userId + ") basket");
 
         } catch (Exception exception) {
-            LOGGER.warn("Deleting product with id=" + productId +
+            log.warn("Deleting product with id=" + productId +
                     " from user's(id=" + userId + ") basket was failed!");
         }
     }
 
     @Override
     public void purchaseBasket(long userId, boolean purchaseSuccess) {
-        LOGGER.debug("Purchasing basket");
+        log.debug("Purchasing basket");
 
         if (purchaseSuccess) {
             try {
@@ -77,14 +82,14 @@ public class OrderServiceImpl implements OrderService {
                         .build()
                 );
 
-                LOGGER.info("User's(id=" + userId + ") basket was purchased");
+                log.info("User's(id=" + userId + ") basket was purchased");
 
             } catch (Exception exception) {
-                LOGGER.warn("Purchasing basket of user(id=" + userId + ") was failed!");
+                log.warn("Purchasing basket of user(id=" + userId + ") was failed!");
             }
         }
         else {
-            LOGGER.info("Purchasing basket of user(id=" + userId + ") is not allowed");
+            log.info("Purchasing basket of user(id=" + userId + ") is not allowed");
         }
     }
 }

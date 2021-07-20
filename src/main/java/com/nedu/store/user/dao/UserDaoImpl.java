@@ -4,16 +4,16 @@ import com.nedu.store.idgenerator.IdGenerator;
 import com.nedu.store.order.Basket;
 import com.nedu.store.order.dao.OrderDao;
 import com.nedu.store.user.User;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Component("userDao")
+@Slf4j
+@Service("userDao")
 public class UserDaoImpl implements UserDao {
-    private static final Logger LOGGER = Logger.getLogger("userDao");
 
     private final Map<Long, User> users = new HashMap<>();
     private final IdGenerator idGenerator;
@@ -39,7 +39,7 @@ public class UserDaoImpl implements UserDao {
 
         user.setId(toStore.getId());
         user.setBasketId(toStore.getBasketId());
-        LOGGER.trace("User created=" + user);
+        log.trace("User created=" + user);
         return user;
     }
 
@@ -48,11 +48,11 @@ public class UserDaoImpl implements UserDao {
         User stored = users.get(id);
 
         if (null == stored) {
-            LOGGER.warn("Get user with id=" + id + " was failed");
+            log.warn("Get user with id=" + id + " was failed");
             throw new RuntimeException("There is no user with id=" + id);
         }
 
-        LOGGER.trace("User accessed=" + stored);
+        log.trace("User accessed=" + stored);
         return User.builder()
                 .id(stored.getId())
                 .login(stored.getLogin())
@@ -69,7 +69,7 @@ public class UserDaoImpl implements UserDao {
         try {
             stored = userStream.findFirst().get();
         } catch (Exception e) {
-            LOGGER.error("User with login=" + login + " wasn't found!");
+            log.error("User with login=" + login + " wasn't found!");
         }
         return stored;
     }

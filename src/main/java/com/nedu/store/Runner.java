@@ -5,18 +5,23 @@ import com.nedu.store.product.Product;
 import com.nedu.store.product.ProductManagementService;
 import com.nedu.store.user.User;
 import com.nedu.store.user.UserService;
-import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
-public class Main {
-    private static final Logger LOGGER = Logger.getLogger("Store");
+@Slf4j
+@Component
+public class Runner implements CommandLineRunner {
+
+    final UserService userService;
+    final ProductManagementService productMS;
+    final OrderService orderService;
 
     private static User currentUser;
 
-    final static String MENU = """
+    private final static String MENU = """
             --menu
             --sign up
             --sign in
@@ -30,15 +35,15 @@ public class Main {
             --exit
             """;
 
-    public static void main(String[] args) {
+    public Runner(UserService userService, ProductManagementService productMS, OrderService orderService) {
+        this.userService = userService;
+        this.productMS = productMS;
+        this.orderService = orderService;
+    }
+
+    @Override
+    public void run(String[] args) {
         Scanner command = new Scanner(System.in);
-
-        ApplicationContext context = new AnnotationConfigApplicationContext("com.nedu.store");
-
-        UserService userService = context.getBean("userService", UserService.class);
-        ProductManagementService productMS =
-                context.getBean("productManagementService", ProductManagementService.class);
-        OrderService orderService = context.getBean("orderService", OrderService.class);
 
         System.out.println("Welcome to Store\n" + MENU);
 
@@ -57,7 +62,7 @@ public class Main {
                     try {
                         currentUser = userService.signUp(user);
                     } catch (Exception e) {
-                        LOGGER.warn("User wasn't signed up");
+                        log.warn("User wasn't signed up");
                     }
 
                     break;
@@ -73,7 +78,7 @@ public class Main {
                     try {
                         currentUser = userService.signIn(user);
                     } catch (Exception e) {
-                        LOGGER.warn("User wasn't signed in");
+                        log.warn("User wasn't signed in");
                     }
 
                     break;
@@ -155,5 +160,6 @@ public class Main {
             }
         }
         command.close();
+        System.exit(0);
     }
 }
