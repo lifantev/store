@@ -1,10 +1,11 @@
+/*
 package com.nedu.store;
 
-import com.nedu.store.order.OrderService;
+import com.nedu.store.order.service.OrderService;
 import com.nedu.store.product.Product;
-import com.nedu.store.product.ProductManagementService;
+import com.nedu.store.product.service.ProductManagementService;
 import com.nedu.store.user.User;
-import com.nedu.store.user.UserService;
+import com.nedu.store.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -163,3 +164,4 @@ public class Runner implements CommandLineRunner {
         System.exit(0);
     }
 }
+*/

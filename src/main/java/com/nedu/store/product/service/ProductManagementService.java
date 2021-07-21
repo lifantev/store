@@ -1,4 +1,6 @@
-package com.nedu.store.product;
+package com.nedu.store.product.service;
+
+import com.nedu.store.product.Product;
 
 public interface ProductManagementService {
     Product add(Product product);

@@ -1,5 +1,6 @@
-package com.nedu.store.user;
+package com.nedu.store.user.service;
 
+import com.nedu.store.user.User;
 import com.nedu.store.user.dao.UserDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,12 @@ public class UserServiceImpl implements UserService {
         log.debug("User signing up");
 
         if (user.getPassword().length() < 3) {
-            log.info("Short password (must be 4 symbols)");
+            log.warn("Short password (must be 4 symbols)");
             throw new RuntimeException();
         }
 
         if (userDao.getUserByLogin(user.getLogin()) != null) {
-            log.info("User with the same login="
+            log.warn("User with the same login="
                     + user.getLogin() + " already exists");
             throw new RuntimeException();
         }

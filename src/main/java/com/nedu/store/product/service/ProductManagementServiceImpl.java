@@ -1,5 +1,6 @@
-package com.nedu.store.product;
+package com.nedu.store.product.service;
 
+import com.nedu.store.product.Product;
 import com.nedu.store.product.dao.ProductDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

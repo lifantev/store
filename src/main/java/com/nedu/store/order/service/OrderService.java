@@ -1,4 +1,4 @@
-package com.nedu.store.order;
+package com.nedu.store.order.service;
 
 public interface OrderService {
     void addToBasket(long userId, long productId);
