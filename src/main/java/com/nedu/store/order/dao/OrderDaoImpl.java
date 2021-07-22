@@ -15,7 +15,7 @@ public class OrderDaoImpl implements OrderDao {
 
     private final Map<Long, Basket> baskets = new HashMap<>();
 
-    private IdGenerator idGenerator;
+    private final IdGenerator idGenerator;
 
     public OrderDaoImpl(IdGenerator idGenerator) {
         this.idGenerator = idGenerator;
@@ -51,7 +51,6 @@ public class OrderDaoImpl implements OrderDao {
                 .id(stored.getId())
                 .productIds(stored.getProductIds())
                 .totalCost(stored.getTotalCost())
-                .purchaseSuccess(stored.isPurchaseSuccess())
                 .build();
     }
 
@@ -66,7 +65,6 @@ public class OrderDaoImpl implements OrderDao {
 
         origin.setProductIds(basket.getProductIds());
         origin.setTotalCost(basket.getTotalCost());
-        origin.setPurchaseSuccess(true);
 
         basket.setId(origin.getId());
         log.trace("Basket updated=" + basket);

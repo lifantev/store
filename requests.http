@@ -1,3 +1,5 @@
+### testing user controller
+
 POST http://localhost:8080/user
 Content-Type: application/json
 
@@ -22,7 +24,7 @@ GET http://localhost:8080/user/danil
 
 1234
 
-###
+### testing product controller
 
 POST http://localhost:8080/product
 Content-Type: application/json
@@ -59,3 +61,23 @@ GET http://localhost:8080/product
 ###
 
 DELETE http://localhost:8080/product/1
+
+### testing order controller
+
+POST http://localhost:8080/order/0
+
+danil
+
+###
+
+POST http://localhost:8080/order
+
+danil
+
+###
+
+DELETE http://localhost:8080/order/0
+
+danil
+
+###

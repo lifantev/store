@@ -62,4 +62,14 @@ public class UserServiceImpl implements UserService {
         log.info("User=" + stored + " signed in");
         return stored;
     }
+
+    @Override
+    public User getUser(long id) {
+        return userDao.getUser(id);
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        return userDao.getUserByLogin(login);
+    }
 }

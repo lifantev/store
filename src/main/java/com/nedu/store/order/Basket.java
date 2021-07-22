@@ -15,5 +15,4 @@ public class Basket {
     long id;
     List<Long> productIds;
     double totalCost;
-    boolean purchaseSuccess;
 }

@@ -70,27 +70,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void purchaseBasket(long userId, boolean purchaseSuccess) {
+    public void purchaseBasket(long userId) {
         log.debug("Purchasing basket");
 
-        if (purchaseSuccess) {
-            try {
-                Basket basket =
-                        orderDao.getBasket(userDao.getUser(userId).getBasketId());
+        try {
+            Basket basket =
+                    orderDao.getBasket(userDao.getUser(userId).getBasketId());
 
-                orderDao.updateBasket(Basket.builder()
-                        .id(basket.getId())
-                        .build()
-                );
+            orderDao.updateBasket(Basket.builder()
+                    .id(basket.getId())
+                    .build()
+            );
 
-                log.info("User's(id=" + userId + ") basket was purchased");
+            log.info("User's(id=" + userId + ") basket was purchased");
 
-            } catch (Exception exception) {
-                log.warn("Purchasing basket of user(id=" + userId + ") was failed!");
-            }
-        }
-        else {
-            log.info("Purchasing basket of user(id=" + userId + ") is not allowed");
+        } catch (Exception exception) {
+            log.warn("Purchasing basket of user(id=" + userId + ") was failed!");
         }
     }
 }
