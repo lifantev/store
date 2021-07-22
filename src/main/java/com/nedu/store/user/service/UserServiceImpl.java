@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
         log.debug("User signing up");
 
         if (user.getPassword().length() < 3) {
-            log.warn("Short password (must be 4 symbols)");
+            log.warn("Short password(must be 4 symbols)");
             throw new RuntimeException();
         }
 

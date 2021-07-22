@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Slf4j
 @Service("productManagementService")
@@ -69,14 +70,20 @@ public class ProductManagementServiceImpl implements ProductManagementService {
     }
 
     @Override
-    public void show() {
+    public List<Product> show() {
         try {
             log.debug("Showing store's products");
 
-            productDao.getProductList().forEach(System.out::println);
+            List<Product> productList = productDao.getProductList();
+
+            log.info("Showing products {{}}", productList);
+
+            return productList;
 
         } catch (Exception e) {
             log.warn("Showing products was failed!");
+
+            return null;
         }
     }
 }

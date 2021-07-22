@@ -18,10 +18,44 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/user
+GET http://localhost:8080/user/danil
+
+1234
+
+###
+
+POST http://localhost:8080/product
 Content-Type: application/json
 
 {
-"login" : "danil",
-"password" : "1234"
+  "name" : "tee",
+  "cost" : "29.99"
 }
+
+###
+
+POST http://localhost:8080/product
+Content-Type: application/json
+
+{
+"name" : "cap",
+"cost" : "20.50"
+}
+
+###
+
+POST http://localhost:8080/product/1
+Content-Type: application/json
+
+{
+  "name" : "UPDATED-cap",
+  "cost" : "20.50"
+}
+
+###
+
+GET http://localhost:8080/product
+
+###
+
+DELETE http://localhost:8080/product/1

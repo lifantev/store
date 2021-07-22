@@ -20,19 +20,12 @@ public class UserControllerImpl implements UserController {
         userService.signUp(user);
     }
 
-    /*@Override
-    @GetMapping
-    public void signInUser(@RequestParam String login, @RequestParam String password) {
-        userService.signIn(User.builder()
-                        .login(login)
-                        .password(password)
-                        .build()
-        );
-    }*/
-
     @Override
-    @GetMapping
-    public void signInUser(@RequestBody User user) {
-        userService.signIn(user);
+    @GetMapping("/{login}")
+    public void signInUser(@PathVariable String login, @RequestBody String password) {
+        userService.signIn(User.builder()
+                .login(login)
+                .password(password)
+                .build());
     }
 }
