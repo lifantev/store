@@ -2,12 +2,14 @@ package com.nedu.store.product.controller;
 
 import com.nedu.store.product.Product;
 import com.nedu.store.product.service.ProductManagementService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 public class ProductManagementControllerImpl implements ProductManagementController {
 
     private final ProductManagementService productMS;
@@ -18,26 +20,27 @@ public class ProductManagementControllerImpl implements ProductManagementControl
 
     @Override
     @PostMapping
-    public void add(@RequestBody Product product) {
-        productMS.add(product);
+    public ResponseEntity<Product> add(@RequestBody Product product) {
+        return new ResponseEntity<>(productMS.add(product), HttpStatus.CREATED);
     }
 
     @Override
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long id) {
         productMS.delete(id);
     }
 
     @Override
-    @PostMapping("/{id}")
-    public void update(@PathVariable long id, @RequestBody Product product) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<Product> update(@PathVariable long id, @RequestBody Product product) {
         product.setId(id);
-        productMS.update(product);
+        return new ResponseEntity<>(productMS.update(product), HttpStatus.OK);
     }
 
     @Override
     @GetMapping
-    public List<Product> show() {
-        return productMS.show();
+    public ResponseEntity<List<Product>> show() {
+        return new ResponseEntity<>(productMS.show(), HttpStatus.OK);
     }
 }

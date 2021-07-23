@@ -69,7 +69,7 @@ public class UserDaoImpl implements UserDao {
         try {
             stored = userStream.findFirst().get();
         } catch (Exception e) {
-            log.error("User with login=" + login + " wasn't found!");
+            log.debug("User with login=" + login + " wasn't found!");
         }
         return stored;
     }
