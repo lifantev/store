@@ -1,6 +1,6 @@
 ### testing user controller
 
-POST http://localhost:8080/users
+POST http://localhost:8080/api/v1/users
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/users
+POST http://localhost:8080/api/v1/users
 Content-Type: application/json
 
 {
@@ -20,13 +20,13 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/users/danil
+GET http://localhost:8080/api/v1/users/danil
 
 1234
 
 ### testing product controller
 
-POST http://localhost:8080/products
+POST http://localhost:8080/api/v1/products
 Content-Type: application/json
 
 {
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/products
+POST http://localhost:8080/api/v1/products
 Content-Type: application/json
 
 {
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:8080/products/1
+PATCH http://localhost:8080/api/v1/products/1
 Content-Type: application/json
 
 {
@@ -56,27 +56,27 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/products
+GET http://localhost:8080/api/v1/products
 
 ###
 
-DELETE http://localhost:8080/products/1
+DELETE http://localhost:8080/api/v1/products/1
 
 ### testing order controller
 
-POST http://localhost:8080/orders/0
+POST http://localhost:8080/api/v1/orders/0
 
 danil
 
 ###
 
-POST http://localhost:8080/orders
+POST http://localhost:8080/api/v1/orders
 
 danil
 
 ###
 
-DELETE http://localhost:8080/orders/0
+DELETE http://localhost:8080/api/v1/orders/0
 
 danil
 
