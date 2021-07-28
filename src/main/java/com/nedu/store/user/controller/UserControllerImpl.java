@@ -1,5 +1,6 @@
 package com.nedu.store.user.controller;
 
+import com.nedu.store.exceptions.RestException;
 import com.nedu.store.user.User;
 import com.nedu.store.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,13 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @PostMapping
-    public ResponseEntity<User> signUpUser(@RequestBody User user) {
+    public ResponseEntity<User> signUpUser(@RequestBody User user) throws RestException {
         return new ResponseEntity<>(userService.signUp(user), HttpStatus.CREATED);
     }
 
     @Override
     @GetMapping("/{login}")
-    public ResponseEntity<User> signInUser(@PathVariable String login, @RequestBody String password) {
+    public ResponseEntity<User> signInUser(@PathVariable String login, @RequestBody String password) throws RestException {
         return new ResponseEntity<>(userService.signIn(User.builder()
                 .login(login)
                 .password(password)

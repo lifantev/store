@@ -1,5 +1,6 @@
 package com.nedu.store.product.controller;
 
+import com.nedu.store.exceptions.RestException;
 import com.nedu.store.product.Product;
 import com.nedu.store.product.service.ProductManagementService;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class ProductManagementControllerImpl implements ProductManagementControl
 
     @Override
     @PostMapping
-    public ResponseEntity<Product> add(@RequestBody Product product) {
+    public ResponseEntity<Product> add(@RequestBody Product product) throws RestException {
         return new ResponseEntity<>(productMS.add(product), HttpStatus.CREATED);
     }
 
@@ -33,14 +34,14 @@ public class ProductManagementControllerImpl implements ProductManagementControl
 
     @Override
     @PatchMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable long id, @RequestBody Product product) {
+    public ResponseEntity<Product> update(@PathVariable long id, @RequestBody Product product) throws RestException {
         product.setId(id);
         return new ResponseEntity<>(productMS.update(product), HttpStatus.OK);
     }
 
     @Override
     @GetMapping
-    public ResponseEntity<List<Product>> show() {
+    public ResponseEntity<List<Product>> show() throws RestException {
         return new ResponseEntity<>(productMS.show(), HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.nedu.store.order.controller;
 
+import com.nedu.store.exceptions.RestException;
 import com.nedu.store.order.service.OrderService;
 import com.nedu.store.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -20,21 +21,23 @@ public class OrderControllerImpl implements OrderController {
     @Override
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addToBasket(@RequestBody String login, @PathVariable("id") long productId) {
+    public void addToBasket(@RequestBody String login, @PathVariable("id") long productId)
+            throws RestException {
         orderService.addToBasket(userService.getUserByLogin(login).getId(), productId);
     }
 
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFromBasket(@RequestBody String login, @PathVariable("id") long productId) {
+    public void deleteFromBasket(@RequestBody String login, @PathVariable("id") long productId)
+            throws RestException {
         orderService.deleteFromBasket(userService.getUserByLogin(login).getId(), productId);
     }
 
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void purchaseBasket(@RequestBody String login) {
+    public void purchaseBasket(@RequestBody String login) throws RestException {
         orderService.purchaseBasket(userService.getUserByLogin(login).getId());
     }
 }

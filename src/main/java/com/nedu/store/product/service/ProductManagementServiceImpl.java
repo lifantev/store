@@ -1,5 +1,7 @@
 package com.nedu.store.product.service;
 
+import com.nedu.store.exceptions.RestException;
+import com.nedu.store.exceptions.RestExceptionEnum;
 import com.nedu.store.product.Product;
 import com.nedu.store.product.dao.ProductDao;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +26,14 @@ public class ProductManagementServiceImpl implements ProductManagementService {
     }
 
     @Override
-    public Product add(Product product) {
+    public Product add(Product product) throws RestException {
         log.debug("Adding product to store");
 
         Product stored = productDao.createProduct(product);
 
         if (null == stored) {
             log.warn("Adding product=" + product + " was failed!");
-            throw new RuntimeException("Product=" + product + " wasn't added");
+            throw new RestException(RestExceptionEnum.ERR_004);
         }
 
         product = productDao.getProduct(stored.getId());
@@ -49,7 +51,7 @@ public class ProductManagementServiceImpl implements ProductManagementService {
     }
 
     @Override
-    public Product update(Product product) {
+    public Product update(Product product) throws RestException {
         try {
             log.debug("Updating product");
 
@@ -65,12 +67,12 @@ public class ProductManagementServiceImpl implements ProductManagementService {
         } catch (Exception e) {
             log.warn("Updating product with id="
                     + product.getId() + " was failed!");
-            return null;
+            throw new RestException(RestExceptionEnum.ERR_004);
         }
     }
 
     @Override
-    public List<Product> show() {
+    public List<Product> show() throws RestException {
         try {
             log.debug("Showing store's products");
 
@@ -82,8 +84,7 @@ public class ProductManagementServiceImpl implements ProductManagementService {
 
         } catch (Exception e) {
             log.warn("Showing products was failed!");
-
-            return null;
+            throw new RestException(RestExceptionEnum.ERR_005);
         }
     }
 }

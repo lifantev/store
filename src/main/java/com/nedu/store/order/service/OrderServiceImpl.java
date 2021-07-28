@@ -1,5 +1,7 @@
 package com.nedu.store.order.service;
 
+import com.nedu.store.exceptions.RestException;
+import com.nedu.store.exceptions.RestExceptionEnum;
 import com.nedu.store.order.Basket;
 import com.nedu.store.order.dao.OrderDao;
 import com.nedu.store.product.Product;
@@ -30,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void addToBasket(long userId, long productId) {
+    public void addToBasket(long userId, long productId) throws RestException {
         try {
             log.debug("Adding product to basket");
 
@@ -46,11 +48,12 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception exception) {
             log.warn("Adding product with id=" + productId
                     + " to user's(id=" + userId + ") basket was failed!");
+            throw new RestException(RestExceptionEnum.ERR_002);
         }
     }
 
     @Override
-    public void deleteFromBasket(long userId, long productId) {
+    public void deleteFromBasket(long userId, long productId) throws RestException {
         try {
             log.debug("Deleting product from basket");
 
@@ -66,11 +69,12 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception exception) {
             log.warn("Deleting product with id=" + productId +
                     " from user's(id=" + userId + ") basket was failed!");
+            throw new RestException(RestExceptionEnum.ERR_002);
         }
     }
 
     @Override
-    public void purchaseBasket(long userId) {
+    public void purchaseBasket(long userId) throws RestException {
         log.debug("Purchasing basket");
 
         try {
@@ -86,6 +90,7 @@ public class OrderServiceImpl implements OrderService {
 
         } catch (Exception exception) {
             log.warn("Purchasing basket of user(id=" + userId + ") was failed!");
+            throw new RestException(RestExceptionEnum.ERR_003);
         }
     }
 }

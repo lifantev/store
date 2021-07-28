@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class RestException extends Exception {
-    private RestExceptionEnum error;
-    private Date date = new Date();
+    private final RestExceptionEnum error;
+    private final Date date = new Date();
 
     public RestException(Throwable throwable) {
         super(throwable);

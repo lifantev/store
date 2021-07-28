@@ -7,7 +7,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum RestExceptionEnum {
     ERR_SYSTEM_INTERNAL("Unexpected system exception"),
-    ERR_001("");
+    ERR_001("Wrong user password or login"),
+    ERR_002("Unknown product or user"),
+    ERR_003("Unknown user"),
+    ERR_004("Unknown product"),
+    ERR_005("Empty product list"),
+    ERR_006("Weak password"),
+    ERR_007("Username already exists");
 
     private String message;
 }
