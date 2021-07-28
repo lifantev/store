@@ -49,13 +49,13 @@ public class UserServiceImpl implements UserService {
 
         User stored = userDao.getUserByLogin(user.getLogin());
         if (null == stored) {
-            log.info("User with login="
+            log.warn("User with login="
                     + user.getLogin() + " doesn't exist");
             throw new RuntimeException();
         }
 
         if (!Objects.equals(stored.getPassword(), user.getPassword())) {
-            log.info("Wrong password or login");
+            log.warn("Wrong password or login");
             throw new RuntimeException();
         }
 
