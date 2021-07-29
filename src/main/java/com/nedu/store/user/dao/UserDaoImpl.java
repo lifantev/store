@@ -7,15 +7,23 @@ import com.nedu.store.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service("userDao")
 public class UserDaoImpl implements UserDao {
 
-    private final Map<Long, User> users = new HashMap<>();
+    private final Map<Long, User> users = new ConcurrentHashMap<>() {{
+        put(1L, User.builder()
+                .id(1)
+                .login("admin")
+                .password("admin")
+                .basketId(1)
+                .build());
+    }};
+
     private final IdGenerator idGenerator;
     private final OrderDao orderDao;
 

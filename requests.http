@@ -21,12 +21,14 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8080/api/v1/users/danil
+Authorization: Basic ZGFuaWw6MTIzNA==
 
 1234
 
 ### testing product controller
 
 POST http://localhost:8080/api/v1/products
+Authorization: Basic YWRtaW46YWRtaW4=
 Content-Type: application/json
 
 {
@@ -37,6 +39,7 @@ Content-Type: application/json
 ###
 
 POST http://localhost:8080/api/v1/products
+Authorization: Basic YWRtaW46YWRtaW4=
 Content-Type: application/json
 
 {
@@ -46,7 +49,8 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:8080/api/v1/products/1
+PATCH http://localhost:8080/api/v1/products/1001
+Authorization: Basic YWRtaW46YWRtaW4=
 Content-Type: application/json
 
 {
@@ -60,7 +64,8 @@ GET http://localhost:8080/api/v1/products
 
 ###
 
-DELETE http://localhost:8080/api/v1/products/1
+DELETE http://localhost:8080/api/v1/products/1000
+Authorization: Basic YWRtaW46YWRtaW4=
 
 ### testing order controller
 

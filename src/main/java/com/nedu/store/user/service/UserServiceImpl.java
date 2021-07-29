@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signIn(User user) throws RestException {
+public User signIn(User user) throws RestException {
         log.debug("User signing in");
 
         User stored = userDao.getUserByLogin(user.getLogin());
