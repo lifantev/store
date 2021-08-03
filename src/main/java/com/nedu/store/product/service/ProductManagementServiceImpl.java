@@ -2,7 +2,7 @@ package com.nedu.store.product.service;
 
 import com.nedu.store.exceptions.RestException;
 import com.nedu.store.exceptions.RestExceptionEnum;
-import com.nedu.store.product.Product;
+import com.nedu.store.product.ProductDTO;
 import com.nedu.store.product.dao.ProductDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,21 +26,21 @@ public class ProductManagementServiceImpl implements ProductManagementService {
     }
 
     @Override
-    public Product add(Product product) throws RestException {
+    public ProductDTO add(ProductDTO productDto) throws RestException {
         log.debug("Adding product to store");
 
-        Product stored = productDao.createProduct(product);
+        ProductDTO stored = productDao.createProduct(productDto);
 
         if (null == stored) {
-            log.warn("Adding product=" + product + " was failed!");
+            log.warn("Adding product=" + productDto + " was failed!");
             throw new RestException(RestExceptionEnum.ERR_004);
         }
 
-        product = productDao.getProduct(stored.getId());
+        productDto = productDao.getProduct(stored.getId());
 
-        log.info("Product=" + product + " was added to store");
+        log.info("Product=" + productDto + " was added to store");
 
-        return product;
+        return productDto;
     }
 
     @Override
@@ -51,36 +51,36 @@ public class ProductManagementServiceImpl implements ProductManagementService {
     }
 
     @Override
-    public Product update(Product product) throws RestException {
+    public ProductDTO update(ProductDTO productDto) throws RestException {
         try {
             log.debug("Updating product");
 
-            Product updated = productDao.updateProduct(product);
+            ProductDTO updated = productDao.updateProduct(productDto);
 
-            product = productDao.getProduct(updated.getId());
+            productDto = productDao.getProduct(updated.getId());
 
             log.info("Product(id=" + updated.getId()
-                    + ") was updated to=" + product);
+                    + ") was updated to=" + productDto);
 
-            return product;
+            return productDto;
 
         } catch (Exception e) {
             log.warn("Updating product with id="
-                    + product.getId() + " was failed!");
+                    + productDto.getId() + " was failed!");
             throw new RestException(RestExceptionEnum.ERR_004);
         }
     }
 
     @Override
-    public List<Product> show() throws RestException {
+    public List<ProductDTO> show() throws RestException {
         try {
             log.debug("Showing store's products");
 
-            List<Product> productList = productDao.getProductList();
+            List<ProductDTO> productDTOList = productDao.getProductList();
 
-            log.info("Showing products {{}}", productList);
+            log.info("Showing products {{}}", productDTOList);
 
-            return productList;
+            return productDTOList;
 
         } catch (Exception e) {
             log.warn("Showing products was failed!");

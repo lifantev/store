@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/orders")
-public class OrderControllerImpl implements OrderController {
+public class OrderControllerImpl {
 
     private final OrderService orderService;
     private final UserService userService;
@@ -18,7 +18,6 @@ public class OrderControllerImpl implements OrderController {
         this.userService = userService;
     }
 
-    @Override
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addToBasket(@RequestBody String login, @PathVariable("id") long productId)
@@ -26,7 +25,6 @@ public class OrderControllerImpl implements OrderController {
         orderService.addToBasket(userService.getUserByLogin(login).getId(), productId);
     }
 
-    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFromBasket(@RequestBody String login, @PathVariable("id") long productId)
@@ -34,7 +32,6 @@ public class OrderControllerImpl implements OrderController {
         orderService.deleteFromBasket(userService.getUserByLogin(login).getId(), productId);
     }
 
-    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void purchaseBasket(@RequestBody String login) throws RestException {

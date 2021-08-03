@@ -2,9 +2,9 @@ package com.nedu.store.order.service;
 
 import com.nedu.store.exceptions.RestException;
 import com.nedu.store.exceptions.RestExceptionEnum;
-import com.nedu.store.order.Basket;
+import com.nedu.store.order.BasketDTO;
 import com.nedu.store.order.dao.OrderDao;
-import com.nedu.store.product.Product;
+import com.nedu.store.product.ProductDTO;
 import com.nedu.store.product.dao.ProductDao;
 import com.nedu.store.user.dao.UserDao;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +36,11 @@ public class OrderServiceImpl implements OrderService {
         try {
             log.debug("Adding product to basket");
 
-            Basket basket =
+            BasketDTO basketDTO =
                     orderDao.getBasket(userDao.getUser(userId).getBasketId());
-            Product product = productDao.getProduct(productId);
+            ProductDTO productDto = productDao.getProduct(productId);
 
-            basket.getProductIds().add(product.getId());
+            basketDTO.getProductIds().add(productDto.getId());
 
             log.info("Product with id=" + productId +
                     " added to user's(id=" + userId + ") basket");
@@ -57,11 +57,11 @@ public class OrderServiceImpl implements OrderService {
         try {
             log.debug("Deleting product from basket");
 
-            Basket basket =
+            BasketDTO basketDTO =
                     orderDao.getBasket(userDao.getUser(userId).getBasketId());
-            Product product = productDao.getProduct(productId);
+            ProductDTO productDto = productDao.getProduct(productId);
 
-            basket.getProductIds().remove(product.getId());
+            basketDTO.getProductIds().remove(productDto.getId());
 
             log.info("Product with id=" + productId +
                     " deleted from user's(id=" + userId + ") basket");
@@ -78,11 +78,11 @@ public class OrderServiceImpl implements OrderService {
         log.debug("Purchasing basket");
 
         try {
-            Basket basket =
+            BasketDTO basketDTO =
                     orderDao.getBasket(userDao.getUser(userId).getBasketId());
 
-            orderDao.updateBasket(Basket.builder()
-                    .id(basket.getId())
+            orderDao.updateBasket(BasketDTO.builder()
+                    .id(basketDTO.getId())
                     .build()
             );
 

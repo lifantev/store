@@ -1,7 +1,7 @@
 package com.nedu.store.order.dao;
 
 import com.nedu.store.idgenerator.IdGenerator;
-import com.nedu.store.order.Basket;
+import com.nedu.store.order.BasketDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 @Service("orderDao")
 public class OrderDaoImpl implements OrderDao {
 
-    private final Map<Long, Basket> baskets = new HashMap<>();
+    private final Map<Long, BasketDTO> baskets = new HashMap<>();
 
     private final IdGenerator idGenerator;
 
@@ -22,24 +22,24 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Basket createBasket(Basket basket) {
+    public BasketDTO createBasket(BasketDTO basketDTO) {
         long id = idGenerator.getId();
 
-        Basket toStore = Basket.builder()
+        BasketDTO toStore = BasketDTO.builder()
                 .id(id)
                 .productIds(new LinkedList<>())
                 .build();
 
         baskets.put(id, toStore);
 
-        basket.setId(id);
-        log.trace("Basket created=" + basket);
-        return basket;
+        basketDTO.setId(id);
+        log.trace("Basket created=" + basketDTO);
+        return basketDTO;
     }
 
     @Override
-    public Basket getBasket(long basketId) {
-        Basket stored = baskets.get(basketId);
+    public BasketDTO getBasket(long basketId) {
+        BasketDTO stored = baskets.get(basketId);
 
         if (null == stored) {
             log.warn("Get basket with id=" + basketId + " was failed");
@@ -47,7 +47,7 @@ public class OrderDaoImpl implements OrderDao {
         }
 
         log.trace("Basket accessed=" + stored);
-        return Basket.builder()
+        return BasketDTO.builder()
                 .id(stored.getId())
                 .productIds(stored.getProductIds())
                 .totalCost(stored.getTotalCost())
@@ -55,19 +55,19 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Basket updateBasket(Basket basket) {
-        Basket origin = baskets.get(basket.getId());
+    public BasketDTO updateBasket(BasketDTO basketDTO) {
+        BasketDTO origin = baskets.get(basketDTO.getId());
 
         if (null == origin) {
-            log.warn("Update basket with id=" + basket.getId() + " was failed");
-            throw new RuntimeException("There is no basket with id=" + basket.getId());
+            log.warn("Update basket with id=" + basketDTO.getId() + " was failed");
+            throw new RuntimeException("There is no basket with id=" + basketDTO.getId());
         }
 
-        origin.setProductIds(basket.getProductIds());
-        origin.setTotalCost(basket.getTotalCost());
+        origin.setProductIds(basketDTO.getProductIds());
+        origin.setTotalCost(basketDTO.getTotalCost());
 
-        basket.setId(origin.getId());
-        log.trace("Basket updated=" + basket);
-        return basket;
+        basketDTO.setId(origin.getId());
+        log.trace("Basket updated=" + basketDTO);
+        return basketDTO;
     }
 }

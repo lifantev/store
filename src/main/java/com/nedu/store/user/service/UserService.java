@@ -1,11 +1,11 @@
 package com.nedu.store.user.service;
 
 import com.nedu.store.exceptions.RestException;
-import com.nedu.store.user.User;
+import com.nedu.store.user.UserDTO;
 
 public interface UserService {
-    User signUp(User user) throws RestException;
-    User signIn(User user) throws RestException;
-    User getUser(long id);
-    User getUserByLogin(String login);
+    UserDTO signUp(UserDTO userDto) throws RestException;
+    UserDTO signIn(UserDTO userDto) throws RestException;
+    UserDTO getUser(long id);
+    UserDTO getUserByLogin(String login);
 }

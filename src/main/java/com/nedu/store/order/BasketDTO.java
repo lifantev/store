@@ -11,8 +11,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Basket {
-    long id;
-    List<Long> productIds;
-    double totalCost;
+public class BasketDTO {
+    private long id;
+    private List<Long> productIds;
 }

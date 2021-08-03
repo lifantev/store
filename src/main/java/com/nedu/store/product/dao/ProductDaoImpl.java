@@ -1,7 +1,7 @@
 package com.nedu.store.product.dao;
 
 import com.nedu.store.idgenerator.IdGenerator;
-import com.nedu.store.product.Product;
+import com.nedu.store.product.ProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 @Service("productDao")
 public class ProductDaoImpl implements ProductDao {
 
-    private final Map<Long, Product> products = new HashMap<>();
+    private final Map<Long, ProductDTO> products = new HashMap<>();
     private final IdGenerator idGenerator;
 
     public ProductDaoImpl(IdGenerator idGenerator) {
@@ -21,25 +21,25 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Product createProduct(Product product) {
+    public ProductDTO createProduct(ProductDTO productDto) {
         long id = idGenerator.getId();
 
-        Product productToStore = Product.builder()
+        ProductDTO productDTOToStore = ProductDTO.builder()
                 .id(id)
-                .name(product.getName())
-                .cost(product.getCost())
+                .name(productDto.getName())
+                .cost(productDto.getCost())
                 .build();
 
-        products.put(id, productToStore);
+        products.put(id, productDTOToStore);
 
-        product.setId(id);
-        log.trace("Product created=" + product);
-        return product;
+        productDto.setId(id);
+        log.trace("Product created=" + productDto);
+        return productDto;
     }
 
     @Override
-    public Product getProduct(long id) {
-        Product stored = products.get(id);
+    public ProductDTO getProduct(long id) {
+        ProductDTO stored = products.get(id);
 
         if (null == stored) {
             log.warn("Get product with id=" + id + " was failed");
@@ -47,7 +47,7 @@ public class ProductDaoImpl implements ProductDao {
         }
 
         log.trace("Product accessed=" + stored);
-        return Product.builder()
+        return ProductDTO.builder()
                 .id(stored.getId())
                 .name(stored.getName())
                 .cost(stored.getCost())
@@ -55,7 +55,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<Product> getProductList() {
+    public List<ProductDTO> getProductList() {
         var storedProducts = products.entrySet();
 
         if (storedProducts.isEmpty()) {
@@ -73,19 +73,19 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        Product origin = products.get(product.getId());
+    public ProductDTO updateProduct(ProductDTO productDto) {
+        ProductDTO origin = products.get(productDto.getId());
 
         if (null == origin) {
-            log.warn("Update product with id=" + product.getId() + " was failed");
-            throw new RuntimeException("There is no product with id=" + product.getId());
+            log.warn("Update product with id=" + productDto.getId() + " was failed");
+            throw new RuntimeException("There is no product with id=" + productDto.getId());
         }
 
-        origin.setName(product.getName());
-        origin.setCost(product.getCost());
+        origin.setName(productDto.getName());
+        origin.setCost(productDto.getCost());
 
-        product.setId(origin.getId());
-        log.trace("Product updated=" + product);
-        return product;
+        productDto.setId(origin.getId());
+        log.trace("Product updated=" + productDto);
+        return productDto;
     }
 }

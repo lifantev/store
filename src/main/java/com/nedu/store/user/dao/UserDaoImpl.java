@@ -1,9 +1,9 @@
 package com.nedu.store.user.dao;
 
 import com.nedu.store.idgenerator.IdGenerator;
-import com.nedu.store.order.Basket;
+import com.nedu.store.order.BasketDTO;
 import com.nedu.store.order.dao.OrderDao;
-import com.nedu.store.user.User;
+import com.nedu.store.user.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service("userDao")
 public class UserDaoImpl implements UserDao {
 
-    private final Map<Long, User> users = new ConcurrentHashMap<>() {{
-        put(1L, User.builder()
+    private final Map<Long, UserDTO> users = new ConcurrentHashMap<>() {{
+        put(1L, UserDTO.builder()
                 .id(1)
                 .login("admin")
                 .password("admin")
@@ -33,27 +33,27 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User createUser(User user) {
+    public UserDTO createUser(UserDTO userDto) {
         long id = idGenerator.getId();
 
-        User toStore = User.builder()
+        UserDTO toStore = UserDTO.builder()
                 .id(id)
-                .login(user.getLogin())
-                .password(user.getPassword())
-                .basketId(orderDao.createBasket(Basket.builder().build()).getId())
+                .login(userDto.getLogin())
+                .password(userDto.getPassword())
+                .basketId(orderDao.createBasket(BasketDTO.builder().build()).getId())
                 .build();
 
         users.put(id, toStore);
 
-        user.setId(toStore.getId());
-        user.setBasketId(toStore.getBasketId());
-        log.trace("User created=" + user);
-        return user;
+        userDto.setId(toStore.getId());
+        userDto.setBasketId(toStore.getBasketId());
+        log.trace("User created=" + userDto);
+        return userDto;
     }
 
     @Override
-    public User getUser(long id) {
-        User stored = users.get(id);
+    public UserDTO getUser(long id) {
+        UserDTO stored = users.get(id);
 
         if (null == stored) {
             log.warn("Get user with id=" + id + " was failed");
@@ -61,7 +61,7 @@ public class UserDaoImpl implements UserDao {
         }
 
         log.trace("User accessed=" + stored);
-        return User.builder()
+        return UserDTO.builder()
                 .id(stored.getId())
                 .login(stored.getLogin())
                 .password(stored.getPassword())
@@ -70,10 +70,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserByLogin(String login) {
+    public UserDTO getUserByLogin(String login) {
         var userStream = users.values().stream().filter(u -> Objects.equals(u.getLogin(), login));
 
-        User stored = null;
+        UserDTO stored = null;
         try {
             stored = userStream.findFirst().get();
         } catch (Exception e) {

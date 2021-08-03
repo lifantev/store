@@ -2,9 +2,10 @@ package com.nedu.store.user.service;
 
 import com.nedu.store.exceptions.RestException;
 import com.nedu.store.exceptions.RestExceptionEnum;
-import com.nedu.store.user.User;
-import com.nedu.store.user.dao.UserDao;
+import com.nedu.store.user.UserDTO;
+import com.nedu.store.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -14,10 +15,10 @@ import java.util.Objects;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @PostConstruct
@@ -26,37 +27,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signUp(User user) throws RestException {
+    public UserDTO signUp(UserDTO userDto) throws RestException {
         log.debug("User signing up");
 
-        if (user.getPassword().length() < 3) {
+        if (userDto.getPassword().length() < 3) {
             log.warn("Short password(must be 4 symbols)");
             throw new RestException(RestExceptionEnum.ERR_006);
         }
 
-        if (userDao.getUserByLogin(user.getLogin()) != null) {
+        if (userRepository.findByLogin(userDto.getLogin()) != null) {
             log.warn("User with the same login="
-                    + user.getLogin() + " already exists");
+                    + userDto.getLogin() + " already exists");
             throw new RestException(RestExceptionEnum.ERR_007);
         }
 
-        user = userDao.createUser(user);
-        log.info("User=" + user + " signed up");
-        return user;
+        userDto = userRepository.save(userDto);
+        log.info("User=" + userDto + " signed up");
+        return userDto;
     }
 
     @Override
-public User signIn(User user) throws RestException {
+public UserDTO signIn(UserDTO userDto) throws RestException {
         log.debug("User signing in");
 
-        User stored = userDao.getUserByLogin(user.getLogin());
+        UserDTO stored = userRepository.getUserByLogin(userDto.getLogin());
         if (null == stored) {
             log.warn("User with login="
-                    + user.getLogin() + " doesn't exist");
+                    + userDto.getLogin() + " doesn't exist");
             throw new RestException(RestExceptionEnum.ERR_001);
         }
 
-        if (!Objects.equals(stored.getPassword(), user.getPassword())) {
+        if (!Objects.equals(stored.getPassword(), userDto.getPassword())) {
             log.warn("Wrong password or login");
             throw new RestException(RestExceptionEnum.ERR_001);
         }
@@ -66,12 +67,12 @@ public User signIn(User user) throws RestException {
     }
 
     @Override
-    public User getUser(long id) {
-        return userDao.getUser(id);
+    public UserDTO getUser(long id) {
+        return userRepository.getUser(id);
     }
 
     @Override
-    public User getUserByLogin(String login) {
-        return userDao.getUserByLogin(login);
+    public UserDTO getUserByLogin(String login) {
+        return userRepository.getUserByLogin(login);
     }
 }

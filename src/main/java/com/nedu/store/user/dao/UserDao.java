@@ -1,9 +1,9 @@
 package com.nedu.store.user.dao;
 
-import com.nedu.store.user.User;
+import com.nedu.store.user.UserDTO;
 
 public interface UserDao {
-    User createUser(User user);
-    User getUser(long id);
-    User getUserByLogin(String login);
+    UserDTO createUser(UserDTO userDto);
+    UserDTO getUser(long id);
+    UserDTO getUserByLogin(String login);
 }
