@@ -1,11 +1,13 @@
 package com.nedu.store.product;
 
+import com.nedu.store.order.BasketEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "products", schema = "store")
@@ -20,9 +22,12 @@ public class ProductEntity {
     @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "name", columnDefinition = "VARCHAR(400)")
+    @Column(name = "name", unique = true, columnDefinition = "VARCHAR(400)")
     private String name;
 
     @Column(name = "cost", columnDefinition = "FLOAT8")
     private Double cost;
+
+    @ManyToMany(mappedBy = "products")
+    private List<BasketEntity> baskets;
 }

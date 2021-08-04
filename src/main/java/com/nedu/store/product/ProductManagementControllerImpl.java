@@ -1,7 +1,6 @@
-package com.nedu.store.product.controller;
+package com.nedu.store.product;
 
 import com.nedu.store.exceptions.RestException;
-import com.nedu.store.product.ProductDTO;
 import com.nedu.store.product.service.ProductManagementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ public class ProductManagementControllerImpl {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> add(@RequestBody ProductDTO productDto) throws RestException {
+    public ResponseEntity<ProductDto> add(@RequestBody ProductDto productDto) throws RestException {
         return new ResponseEntity<>(productMS.add(productDto), HttpStatus.CREATED);
     }
 
@@ -31,13 +30,13 @@ public class ProductManagementControllerImpl {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable long id, @RequestBody ProductDTO productDto) throws RestException {
+    public ResponseEntity<ProductDto> update(@PathVariable long id, @RequestBody ProductDto productDto) throws RestException {
         productDto.setId(id);
         return new ResponseEntity<>(productMS.update(productDto), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> show() throws RestException {
+    public ResponseEntity<List<ProductDto>> show() throws RestException {
         return new ResponseEntity<>(productMS.show(), HttpStatus.OK);
     }
 }

@@ -2,9 +2,9 @@ package com.nedu.store.order.service;
 
 import com.nedu.store.exceptions.RestException;
 import com.nedu.store.exceptions.RestExceptionEnum;
-import com.nedu.store.order.BasketDTO;
+import com.nedu.store.order.BasketDto;
 import com.nedu.store.order.dao.OrderDao;
-import com.nedu.store.product.ProductDTO;
+import com.nedu.store.product.ProductDto;
 import com.nedu.store.product.dao.ProductDao;
 import com.nedu.store.user.dao.UserDao;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +36,9 @@ public class OrderServiceImpl implements OrderService {
         try {
             log.debug("Adding product to basket");
 
-            BasketDTO basketDTO =
+            BasketDto basketDTO =
                     orderDao.getBasket(userDao.getUser(userId).getBasketId());
-            ProductDTO productDto = productDao.getProduct(productId);
+            ProductDto productDto = productDao.getProduct(productId);
 
             basketDTO.getProductIds().add(productDto.getId());
 
@@ -57,9 +57,9 @@ public class OrderServiceImpl implements OrderService {
         try {
             log.debug("Deleting product from basket");
 
-            BasketDTO basketDTO =
+            BasketDto basketDTO =
                     orderDao.getBasket(userDao.getUser(userId).getBasketId());
-            ProductDTO productDto = productDao.getProduct(productId);
+            ProductDto productDto = productDao.getProduct(productId);
 
             basketDTO.getProductIds().remove(productDto.getId());
 
@@ -78,10 +78,10 @@ public class OrderServiceImpl implements OrderService {
         log.debug("Purchasing basket");
 
         try {
-            BasketDTO basketDTO =
+            BasketDto basketDTO =
                     orderDao.getBasket(userDao.getUser(userId).getBasketId());
 
-            orderDao.updateBasket(BasketDTO.builder()
+            orderDao.updateBasket(BasketDto.builder()
                     .id(basketDTO.getId())
                     .build()
             );

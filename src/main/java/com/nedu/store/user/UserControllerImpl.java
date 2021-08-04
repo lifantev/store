@@ -17,13 +17,13 @@ public class UserControllerImpl {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> signUpUser(@RequestBody UserDTO userDto) throws RestException {
+    public ResponseEntity<UserDto> signUpUser(@RequestBody UserDto userDto) throws RestException {
         return new ResponseEntity<>(userService.signUp(userDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{login}")
-    public ResponseEntity<UserDTO> signInUser(@PathVariable String login, @RequestBody String password) throws RestException {
-        return new ResponseEntity<>(userService.signIn(UserDTO.builder()
+    public ResponseEntity<UserDto> signInUser(@PathVariable String login, @RequestBody String password) throws RestException {
+        return new ResponseEntity<>(userService.signIn(UserDto.builder()
                 .login(login)
                 .password(password)
                 .build()), HttpStatus.OK);

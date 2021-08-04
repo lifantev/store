@@ -1,4 +1,4 @@
-package com.nedu.store.order.controller;
+package com.nedu.store.order;
 
 import com.nedu.store.exceptions.RestException;
 import com.nedu.store.order.service.OrderService;

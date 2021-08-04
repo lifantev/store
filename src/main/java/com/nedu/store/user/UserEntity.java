@@ -22,11 +22,12 @@ public class UserEntity {
     private Long id;
 
     @Column(name = "login", columnDefinition = "VARCHAR(400)")
-    String login;
+    private String login;
 
     @Column(name = "password", columnDefinition = "VARCHAR(400)")
-    String password;
+    private String password;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "users")
-    BasketEntity basket;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "basket_id", referencedColumnName = "id")
+    private BasketEntity basket;
 }

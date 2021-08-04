@@ -2,17 +2,18 @@ package com.nedu.store.user.service;
 
 import com.nedu.store.exceptions.RestException;
 import com.nedu.store.exceptions.RestExceptionEnum;
-import com.nedu.store.user.UserDTO;
+import com.nedu.store.user.UserDto;
 import com.nedu.store.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.Objects;
 
 @Slf4j
 @Service("userService")
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO signUp(UserDTO userDto) throws RestException {
+    public UserDto signUp(UserDto userDto) throws RestException {
         log.debug("User signing up");
 
         if (userDto.getPassword().length() < 3) {
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
             throw new RestException(RestExceptionEnum.ERR_006);
         }
 
-        if (userRepository.findByLogin(userDto.getLogin()) != null) {
+        if (userRepository.findByLogin(userDto.getLogin()).isEmpty()) {
             log.warn("User with the same login="
                     + userDto.getLogin() + " already exists");
             throw new RestException(RestExceptionEnum.ERR_007);
@@ -47,10 +48,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-public UserDTO signIn(UserDTO userDto) throws RestException {
+public UserDto signIn(UserDto userDto) throws RestException {
         log.debug("User signing in");
 
-        UserDTO stored = userRepository.getUserByLogin(userDto.getLogin());
+        UserDto stored = userRepository.findByLogin(userDto.getLogin());
         if (null == stored) {
             log.warn("User with login="
                     + userDto.getLogin() + " doesn't exist");
@@ -67,12 +68,12 @@ public UserDTO signIn(UserDTO userDto) throws RestException {
     }
 
     @Override
-    public UserDTO getUser(long id) {
-        return userRepository.getUser(id);
+    public UserDto getUser(long id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    public UserDTO getUserByLogin(String login) {
-        return userRepository.getUserByLogin(login);
+    public UserDto getUserByLogin(String login) {
+        return userRepository.findByLogin(login);
     }
 }

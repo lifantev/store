@@ -2,7 +2,7 @@ package com.nedu.store.product.service;
 
 import com.nedu.store.exceptions.RestException;
 import com.nedu.store.exceptions.RestExceptionEnum;
-import com.nedu.store.product.ProductDTO;
+import com.nedu.store.product.ProductDto;
 import com.nedu.store.product.dao.ProductDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,10 +26,10 @@ public class ProductManagementServiceImpl implements ProductManagementService {
     }
 
     @Override
-    public ProductDTO add(ProductDTO productDto) throws RestException {
+    public ProductDto add(ProductDto productDto) throws RestException {
         log.debug("Adding product to store");
 
-        ProductDTO stored = productDao.createProduct(productDto);
+        ProductDto stored = productDao.createProduct(productDto);
 
         if (null == stored) {
             log.warn("Adding product=" + productDto + " was failed!");
@@ -51,11 +51,11 @@ public class ProductManagementServiceImpl implements ProductManagementService {
     }
 
     @Override
-    public ProductDTO update(ProductDTO productDto) throws RestException {
+    public ProductDto update(ProductDto productDto) throws RestException {
         try {
             log.debug("Updating product");
 
-            ProductDTO updated = productDao.updateProduct(productDto);
+            ProductDto updated = productDao.updateProduct(productDto);
 
             productDto = productDao.getProduct(updated.getId());
 
@@ -72,15 +72,15 @@ public class ProductManagementServiceImpl implements ProductManagementService {
     }
 
     @Override
-    public List<ProductDTO> show() throws RestException {
+    public List<ProductDto> show() throws RestException {
         try {
             log.debug("Showing store's products");
 
-            List<ProductDTO> productDTOList = productDao.getProductList();
+            List<ProductDto> productDtoList = productDao.getProductList();
 
-            log.info("Showing products {{}}", productDTOList);
+            log.info("Showing products {{}}", productDtoList);
 
-            return productDTOList;
+            return productDtoList;
 
         } catch (Exception e) {
             log.warn("Showing products was failed!");
