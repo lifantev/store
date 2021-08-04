@@ -3,21 +3,28 @@ package com.nedu.store.product.service;
 import com.nedu.store.exceptions.RestException;
 import com.nedu.store.exceptions.RestExceptionEnum;
 import com.nedu.store.product.ProductDto;
-import com.nedu.store.product.dao.ProductDao;
+import com.nedu.store.product.ProductEntity;
+import com.nedu.store.product.ProductMapper;
+import com.nedu.store.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service("productManagementService")
+@Transactional
 public class ProductManagementServiceImpl implements ProductManagementService {
 
-    private final ProductDao productDao;
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
-    public ProductManagementServiceImpl(ProductDao productDao) {
-        this.productDao = productDao;
+    public ProductManagementServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
+        this.productRepository = productRepository;
+        this.productMapper = productMapper;
     }
 
     @PostConstruct
@@ -26,38 +33,39 @@ public class ProductManagementServiceImpl implements ProductManagementService {
     }
 
     @Override
-    public ProductDto add(ProductDto productDto) throws RestException {
+    public long add(ProductDto productDto) throws RestException {
         log.debug("Adding product to store");
 
-        ProductDto stored = productDao.createProduct(productDto);
+        try {
+            ProductEntity stored = productRepository.saveAndFlush(productMapper.toEntity(productDto));
 
-        if (null == stored) {
+            log.info("Product=" + productDto + " was added to store");
+
+            return stored.getId();
+
+        } catch (Exception e) {
             log.warn("Adding product=" + productDto + " was failed!");
             throw new RestException(RestExceptionEnum.ERR_004);
         }
-
-        productDto = productDao.getProduct(stored.getId());
-
-        log.info("Product=" + productDto + " was added to store");
-
-        return productDto;
     }
 
     @Override
     public void delete(long id) {
-        productDao.deleteProduct(id);
+
+        productRepository.deleteById(id);
 
         log.info("Product with id=" + id + " deleted from store");
     }
 
     @Override
     public ProductDto update(ProductDto productDto) throws RestException {
+        log.debug("Updating product");
+
         try {
-            log.debug("Updating product");
 
-            ProductDto updated = productDao.updateProduct(productDto);
+            ProductEntity stored = productRepository.findById(productDto.getId()).get();
 
-            productDto = productDao.getProduct(updated.getId());
+            ProductEntity updated = productRepository.saveAndFlush(productMapper.toEntity(productDto));
 
             log.info("Product(id=" + updated.getId()
                     + ") was updated to=" + productDto);
@@ -73,14 +81,15 @@ public class ProductManagementServiceImpl implements ProductManagementService {
 
     @Override
     public List<ProductDto> show() throws RestException {
+        log.debug("Showing store's products");
+
         try {
-            log.debug("Showing store's products");
 
-            List<ProductDto> productDtoList = productDao.getProductList();
+            List<ProductEntity> productEntityList = productRepository.findAll();
 
-            log.info("Showing products {{}}", productDtoList);
+            log.info("Showing products");
 
-            return productDtoList;
+            return productEntityList.stream().map(productMapper::toDto).collect(Collectors.toList());
 
         } catch (Exception e) {
             log.warn("Showing products was failed!");

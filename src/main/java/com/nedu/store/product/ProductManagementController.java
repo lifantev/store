@@ -10,16 +10,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
-public class ProductManagementControllerImpl {
+public class ProductManagementController {
 
     private final ProductManagementService productMS;
 
-    public ProductManagementControllerImpl(ProductManagementService productMS) {
+    public ProductManagementController(ProductManagementService productMS) {
         this.productMS = productMS;
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> add(@RequestBody ProductDto productDto) throws RestException {
+    public ResponseEntity<Long> add(@RequestBody ProductDto productDto) throws RestException {
         return new ResponseEntity<>(productMS.add(productDto), HttpStatus.CREATED);
     }
 

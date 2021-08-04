@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -27,7 +28,7 @@ public class BasketEntity {
     @JoinTable(name = "products",
             joinColumns = {@JoinColumn(referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")})
-    private List<ProductEntity> products;
+    private List<ProductEntity> products = new LinkedList<>();
 
     @OneToOne(mappedBy = "basket")
     private UserEntity user;

@@ -2,28 +2,32 @@ package com.nedu.store.order.service;
 
 import com.nedu.store.exceptions.RestException;
 import com.nedu.store.exceptions.RestExceptionEnum;
-import com.nedu.store.order.BasketDto;
-import com.nedu.store.order.dao.OrderDao;
+import com.nedu.store.order.BasketEntity;
+import com.nedu.store.order.BasketRepository;
 import com.nedu.store.product.ProductDto;
-import com.nedu.store.product.dao.ProductDao;
-import com.nedu.store.user.dao.UserDao;
+import com.nedu.store.product.ProductEntity;
+import com.nedu.store.product.ProductRepository;
+import com.nedu.store.user.UserEntity;
+import com.nedu.store.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
 @Slf4j
 @Service("orderService")
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
-    private final UserDao userDao;
-    private final OrderDao orderDao;
-    private final ProductDao productDao;
+    private final UserRepository userRepository;
+    private final BasketRepository basketRepository;
+    private final ProductRepository productRepository;
 
-    public OrderServiceImpl(UserDao userDao, OrderDao orderDao, ProductDao productDao) {
-        this.userDao = userDao;
-        this.orderDao = orderDao;
-        this.productDao = productDao;
+    public OrderServiceImpl(UserRepository userRepository, BasketRepository basketRepository, ProductRepository productRepository) {
+        this.userRepository = userRepository;
+        this.basketRepository = basketRepository;
+        this.productRepository = productRepository;
     }
 
     @PostConstruct
@@ -32,65 +36,46 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void addToBasket(long userId, long productId) throws RestException {
+    public void addToBasket(String login, long productId) throws RestException {
         try {
             log.debug("Adding product to basket");
 
-            BasketDto basketDTO =
-                    orderDao.getBasket(userDao.getUser(userId).getBasketId());
-            ProductDto productDto = productDao.getProduct(productId);
+            UserEntity user = userRepository.findByLogin(login).get();
+            ProductEntity productEntity = productRepository.findById(productId).get();
+            BasketEntity basket = user.getBasket();
 
-            basketDTO.getProductIds().add(productDto.getId());
+            basket.getProducts().add(productEntity);
+            basketRepository.saveAndFlush(basket);
 
             log.info("Product with id=" + productId +
-                    " added to user's(id=" + userId + ") basket");
+                    " added to user's(" + login + ") basket");
 
         } catch (Exception exception) {
             log.warn("Adding product with id=" + productId
-                    + " to user's(id=" + userId + ") basket was failed!");
+                    + " to user's(" + login + ") basket was failed!");
             throw new RestException(RestExceptionEnum.ERR_002);
         }
     }
 
     @Override
-    public void deleteFromBasket(long userId, long productId) throws RestException {
+    public void deleteFromBasket(String login, long productId) throws RestException {
         try {
             log.debug("Deleting product from basket");
 
-            BasketDto basketDTO =
-                    orderDao.getBasket(userDao.getUser(userId).getBasketId());
-            ProductDto productDto = productDao.getProduct(productId);
+            UserEntity user = userRepository.findByLogin(login).get();
+            ProductEntity productEntity = productRepository.findById(productId).get();
+            BasketEntity basket = user.getBasket();
 
-            basketDTO.getProductIds().remove(productDto.getId());
+            basket.getProducts().remove(productEntity);
+            basketRepository.saveAndFlush(basket);
 
             log.info("Product with id=" + productId +
-                    " deleted from user's(id=" + userId + ") basket");
+                    " deleted from user's(" + login + ") basket");
 
         } catch (Exception exception) {
             log.warn("Deleting product with id=" + productId +
-                    " from user's(id=" + userId + ") basket was failed!");
+                    " from user's(" + login + ") basket was failed!");
             throw new RestException(RestExceptionEnum.ERR_002);
-        }
-    }
-
-    @Override
-    public void purchaseBasket(long userId) throws RestException {
-        log.debug("Purchasing basket");
-
-        try {
-            BasketDto basketDTO =
-                    orderDao.getBasket(userDao.getUser(userId).getBasketId());
-
-            orderDao.updateBasket(BasketDto.builder()
-                    .id(basketDTO.getId())
-                    .build()
-            );
-
-            log.info("User's(id=" + userId + ") basket was purchased");
-
-        } catch (Exception exception) {
-            log.warn("Purchasing basket of user(id=" + userId + ") was failed!");
-            throw new RestException(RestExceptionEnum.ERR_003);
         }
     }
 }

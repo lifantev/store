@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -29,5 +30,5 @@ public class ProductEntity {
     private Double cost;
 
     @ManyToMany(mappedBy = "products")
-    private List<BasketEntity> baskets;
+    private List<BasketEntity> baskets = new LinkedList<>();
 }

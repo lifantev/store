@@ -29,5 +29,5 @@ public class UserEntity {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "basket_id", referencedColumnName = "id")
-    private BasketEntity basket;
+    private BasketEntity basket = new BasketEntity();
 }
