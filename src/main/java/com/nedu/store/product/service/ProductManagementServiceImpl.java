@@ -50,11 +50,17 @@ public class ProductManagementServiceImpl implements ProductManagementService {
     }
 
     @Override
-    public void delete(long id) {
+    public long delete(long id) throws RestException {
 
-        productRepository.deleteById(id);
+        if (productRepository.existsById(id)) {
 
-        log.info("Product with id=" + id + " deleted from store");
+            productRepository.deleteById(id);
+
+            log.info("Product with id=" + id + " deleted from store");
+            return id;
+        } else {
+            throw new RestException(RestExceptionEnum.ERR_004);
+        }
     }
 
     @Override

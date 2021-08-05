@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductManagementService {
     long add(ProductDto productDto) throws RestException;
-    void delete(long id);
+    long delete(long id) throws RestException;
     ProductDto update(ProductDto productDto) throws RestException;
     List<ProductDto> show() throws RestException;
 }

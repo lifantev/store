@@ -6,6 +6,7 @@ import com.nedu.store.order.BasketEntity;
 import com.nedu.store.order.BasketRepository;
 import com.nedu.store.product.ProductDto;
 import com.nedu.store.product.ProductEntity;
+import com.nedu.store.product.ProductMapper;
 import com.nedu.store.product.ProductRepository;
 import com.nedu.store.user.UserEntity;
 import com.nedu.store.user.UserRepository;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service("orderService")
@@ -23,11 +26,16 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final BasketRepository basketRepository;
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
-    public OrderServiceImpl(UserRepository userRepository, BasketRepository basketRepository, ProductRepository productRepository) {
+    public OrderServiceImpl(UserRepository userRepository,
+                            BasketRepository basketRepository,
+                            ProductRepository productRepository,
+                            ProductMapper productMapper) {
         this.userRepository = userRepository;
         this.basketRepository = basketRepository;
         this.productRepository = productRepository;
+        this.productMapper = productMapper;
     }
 
     @PostConstruct
@@ -76,6 +84,22 @@ public class OrderServiceImpl implements OrderService {
             log.warn("Deleting product with id=" + productId +
                     " from user's(" + login + ") basket was failed!");
             throw new RestException(RestExceptionEnum.ERR_002);
+        }
+    }
+
+    @Override
+    public List<ProductDto> showBasket(String login) throws RestException {
+        try {
+            log.debug("Showing basket");
+
+            UserEntity user = userRepository.findByLogin(login).get();
+            BasketEntity basket = user.getBasket();
+
+            return basket.getProducts().stream().map(productMapper::toDto).collect(Collectors.toList());
+
+        } catch (Exception exception) {
+            log.warn("Showing user's(" + login + ") basket was failed!");
+            throw new RestException(RestExceptionEnum.ERR_008);
         }
     }
 }

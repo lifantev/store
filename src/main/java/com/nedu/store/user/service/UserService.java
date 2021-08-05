@@ -4,8 +4,6 @@ import com.nedu.store.exceptions.RestException;
 import com.nedu.store.user.UserDto;
 
 public interface UserService {
-    UserDto signUp(UserDto userDto) throws RestException;
-    UserDto signIn(UserDto userDto) throws RestException;
-    UserDto getUser(long id);
-    UserDto getUserByLogin(String login);
+    Long signUp(UserDto userDto) throws RestException;
+    Long signIn(UserDto userDto) throws RestException;
 }

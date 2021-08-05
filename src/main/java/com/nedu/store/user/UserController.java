@@ -17,15 +17,15 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> signUpUser(@RequestBody UserDto userDto) throws RestException {
+    public ResponseEntity<Long> signUpUser(@RequestBody UserDto userDto) throws RestException {
         return new ResponseEntity<>(userService.signUp(userDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{login}")
-    public ResponseEntity<UserDto> signInUser(@PathVariable String login, @RequestBody String password) throws RestException {
+    /*@GetMapping("/{login}")
+    public ResponseEntity<Long> signInUser(@PathVariable String login, @RequestBody String password) throws RestException {
         return new ResponseEntity<>(userService.signIn(UserDto.builder()
                 .login(login)
                 .password(password)
                 .build()), HttpStatus.OK);
-    }
+    }*/
 }

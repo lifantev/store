@@ -13,7 +13,8 @@ public enum RestExceptionEnum {
     ERR_004("Unknown product"),
     ERR_005("Empty product list"),
     ERR_006("Weak password"),
-    ERR_007("Username already exists");
+    ERR_007("Username already exists"),
+    ERR_008("Basket showing error");
 
     private String message;
 }

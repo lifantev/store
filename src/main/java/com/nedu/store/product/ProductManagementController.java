@@ -24,13 +24,14 @@ public class ProductManagementController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable long id) {
-        productMS.delete(id);
+    @ResponseStatus
+    public ResponseEntity<Long> delete(@PathVariable long id) throws RestException {
+        return new ResponseEntity<>(productMS.delete(id), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductDto> update(@PathVariable long id, @RequestBody ProductDto productDto) throws RestException {
+    public ResponseEntity<ProductDto> update(@PathVariable long id, @RequestBody ProductDto productDto)
+            throws RestException {
         productDto.setId(id);
         return new ResponseEntity<>(productMS.update(productDto), HttpStatus.OK);
     }

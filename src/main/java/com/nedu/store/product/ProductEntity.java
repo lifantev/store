@@ -29,6 +29,8 @@ public class ProductEntity {
     @Column(name = "cost", columnDefinition = "FLOAT8")
     private Double cost;
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     private List<BasketEntity> baskets = new LinkedList<>();
 }

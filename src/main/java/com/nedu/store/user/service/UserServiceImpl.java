@@ -7,6 +7,7 @@ import com.nedu.store.user.UserEntity;
 import com.nedu.store.user.UserMapper;
 import com.nedu.store.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +22,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -33,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto signUp(UserDto userDto) throws RestException {
+    public Long signUp(UserDto userDto) throws RestException {
         log.debug("User signing up");
 
         if (userDto.getPassword().length() < 3) {
@@ -47,41 +50,32 @@ public class UserServiceImpl implements UserService {
             throw new RestException(RestExceptionEnum.ERR_007);
         }
 
-        // TODO encode
-        userRepository.saveAndFlush(userMapper.toEntity(userDto));
+        UserEntity userEntity = userMapper.toEntity(userDto);
+        userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userEntity = userRepository.saveAndFlush(userEntity);
 
-        log.info("User=" + userDto + " signed up");
-        return userDto;
+        log.info("User id=" + userEntity.getId() + " signed up");
+        return userEntity.getId();
     }
 
     @Override
-    public UserDto signIn(UserDto userDto) throws RestException {
+    public Long signIn(UserDto userDto) throws RestException {
         log.debug("User signing in");
 
         Optional<UserEntity> stored = userRepository.findByLogin(userDto.getLogin());
+
         if (stored.isEmpty()) {
             log.warn("User with login="
                     + userDto.getLogin() + " doesn't exist");
             throw new RestException(RestExceptionEnum.ERR_001);
         }
 
-        // TODO decode
-        if (!Objects.equals(stored.get().getPassword(), userDto.getPassword())) {
+        if (!passwordEncoder.matches(userDto.getPassword(), stored.get().getPassword())) {
             log.warn("Wrong password or login");
             throw new RestException(RestExceptionEnum.ERR_001);
         }
 
         log.info("User=" + stored + " signed in");
-        return userMapper.toDto(stored.get());
-    }
-
-    @Override
-    public UserDto getUser(long id) {
-        return userMapper.toDto(userRepository.findById(id).get());
-    }
-
-    @Override
-    public UserDto getUserByLogin(String login) {
-        return userMapper.toDto(userRepository.findByLogin(login).get());
+        return stored.get().getId();
     }
 }
