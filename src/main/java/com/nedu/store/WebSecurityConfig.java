@@ -43,8 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/products").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").permitAll()
-                .and()
                 .httpBasic();
     }
 

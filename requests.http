@@ -62,17 +62,18 @@ GET http://localhost:8080/api/v1/products
 
 ###
 
-DELETE http://localhost:8080/api/v1/products/6
+DELETE http://localhost:8080/api/v1/products/4
 Authorization: Basic YWRtaW46YWRtaW4=
 
 ### TESTING ORDER CONTROLLER
 
-POST http://localhost:8080/api/v1/orders/6
-
+POST http://localhost:8080/api/v1/orders/3
+Authorization: Basic ZGFuaWw6MTIzNA==
 ###
 
 DELETE http://localhost:8080/api/v1/orders/6
-
+Authorization: Basic ZGFuaWw6MTIzNA==
 ###
 
 GET http://localhost:8080/api/v1/orders
+Authorization: Basic ZGFuaWw6MTIzNA==

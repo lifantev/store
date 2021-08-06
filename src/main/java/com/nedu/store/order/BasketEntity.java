@@ -25,7 +25,7 @@ public class BasketEntity {
     private Long id;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "products",
+    @JoinTable(name = "basket_products", schema = "store",
             joinColumns = {@JoinColumn(referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")})
     private List<ProductEntity> products = new LinkedList<>();

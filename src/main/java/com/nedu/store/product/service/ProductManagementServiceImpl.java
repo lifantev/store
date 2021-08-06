@@ -51,8 +51,13 @@ public class ProductManagementServiceImpl implements ProductManagementService {
 
     @Override
     public long delete(long id) throws RestException {
+        log.debug("Deleting product from store");
 
         if (productRepository.existsById(id)) {
+
+            ProductEntity productEntity = productRepository.getById(id);
+
+            productEntity.getBaskets().removeAll(productEntity.getBaskets());
 
             productRepository.deleteById(id);
 
@@ -68,7 +73,6 @@ public class ProductManagementServiceImpl implements ProductManagementService {
         log.debug("Updating product");
 
         try {
-
             ProductEntity stored = productRepository.findById(productDto.getId()).get();
 
             ProductEntity updated = productRepository.saveAndFlush(productMapper.toEntity(productDto));
